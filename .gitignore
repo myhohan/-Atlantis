@@ -1,0 +1,12 @@
+# 이클립스 설정 파일 무시
+.metadata/
+.settings/
+.classpath
+.project
+bin/
+
+# 자바 컴파일 파일 무시
+*.class
+
+# 맥(Mac) 시스템 파일 무시 (혹시 모르니 추가)
+.DS_Store

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.finalproject.mapper.PaymentManagementMapper">
+
+    <select id="selectTotalPayment" parameterType="string" resultType="int">
+        SELECT SUM(AMOUNT)
+        FROM PAYMENT
+        WHERE MEMBER_ID = #{memberId}
+        AND MEMBER_DEL_FL = 'N'
+    </select>
+    
+    <select id="selectPendingPayment" parameterType="string" resultType="int">
+        SELECT SUM(AMOUNT)
+        FROM PAYMENT
+        WHERE MEMBER_ID = #{memberId}
+        AND STATUS = '대기'
+        AND MEMBER_DEL_FL = 'N'
+    </select>
+    
+    <select id="selectCompletePayment" parameterType="string" resultType="int">
+        SELECT SUM(AMOUNT)
+        FROM PAYMENT
+        WHERE MEMBER_ID = #{memberId}
+        AND STATUS = '완료'
+        AND MEMBER_DEL_FL = 'N'
+    </select>
+    
+    <select id="selectPaymentList" parameterType="map" resultType="com.kh.finalproject.dto.PaymentManagement">
+        SELECT 
+            PAYMENT_NO AS paymentNo,
+            MEMBER_ID AS memberId,
+            AMOUNT AS amount,
+            PAYMENT_DATE AS paymentDate,
+            STATUS AS status
+        FROM PAYMENT
+        WHERE MEMBER_ID = #{memberId}
+        AND MEMBER_DEL_FL = 'N'
+        
+        <if test="duration == '오늘'">
+            AND TO_CHAR(PAYMENT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+        </if>
+        <if test="duration == '이번달'">
+            AND TO_CHAR(PAYMENT_DATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')
+        </if>
+        ORDER BY PAYMENT_DATE DESC
+    </select>
+
+</mapper>

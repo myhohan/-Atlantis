@@ -1,0 +1,177 @@
+package com.kh.finalproject.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.kh.finalproject.dto.Board;
+import com.kh.finalproject.dto.Member;
+import com.kh.finalproject.service.AdminService;
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@RestController
+//[중요 1] React 개발 서버 주소(http://localhost:3000) 허용 및 쿠키(Session) 사용 허용
+@RequestMapping("/admin") // 경로를 명확히 하기 위해 /admin prefix 추천
+@RequiredArgsConstructor
+public class AdminController {
+
+ private final AdminService service; // @Autowired 제거 (RequiredArgsConstructor가 처리함)
+
+ /** * [수정됨] Model 제거
+  * @RestController는 리턴값 자체가 JSON Body가 됩니다.
+  * Model은 JSP/Thymeleaf 같은 SSR에서만 사용합니다.
+  */
+ @PostMapping("/login")
+ public ResponseEntity<Member> login(@RequestBody Member inputMember, HttpSession session) {
+     
+     Member loginMember = service.login(inputMember);
+     
+     if(loginMember == null) {
+         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+     }
+     
+     // 세션에 로그인 정보 저장 (React가 쿠키를 가지고 있어야 유지됨)
+     session.setAttribute("loginMember", loginMember);
+     
+     return ResponseEntity.ok(loginMember);
+ }
+ 
+ // ... 나머지 기존 메서드들은 그대로 두셔도 JSON으로 응답하므로 호환됩니다.
+ // 다만 @GetMapping("logout") 등의 경로 앞에 /admin이 붙게 됩니다. (예: /admin/logout)
+
+    
+    @GetMapping("logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+    	// ResponseEntity
+    	// Spring 에서 제공하는 Http 응답 데이터를
+    	// 커스터마이징 할 수 있도록 지원하는 클래스
+    	// -> Http 상태코드, 헤더, 응답 본문(body)을 모두 설정 가능
+    	try {
+    		session.invalidate(); // 세션 무효화 처리
+    		return ResponseEntity.status(HttpStatus.OK) // 200
+    				.body("로그아웃이 완료되었습니다");
+    		
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR) // 500
+    				.body("로그아웃 중 예외 발생 : " + e.getMessage());
+    		
+    	}
+    }
+    
+    /** 관리자 계정 발급
+     * @return
+     */
+    @PostMapping("createAdminAccount")
+    public ResponseEntity<String> createAdminAccount(@RequestBody Member member) {
+    	try {
+    		// 1. 기존에 있는 이메일인지 검사
+    		int checkEmail = service.checkEmail(member.getMemberEmail());
+    		
+    		// 2. 있으면 발급 안 함
+    		if(checkEmail > 0) {
+    			// HttpStatus.CONFLICT (409) : 요청이 서버의 현재 상태와 충돌할 때 사용
+    			// == 이미 존재하는 리소스(email) 때문에 새로운 리소스를 만들 수 없다.
+    			return ResponseEntity.status(HttpStatus.CONFLICT)
+    					.body("이미 사용중인 이메일입니다.");
+    		}
+    		
+    		// 3. 없으면 새로 발급 -> 비밀번호 반환
+    		String accountPw = service.createAdminAccount(member);
+    		
+    		// HttpStatus.OK (200) : 요청이 정상적으로 처리되었으나 기존 리소스에 대한 단순 처리
+    		// HttpStatus.CREATED (201) : 자원이 성공적으로 생성되었음을 나타냄
+    		
+    		return ResponseEntity.status(HttpStatus.CREATED).body(accountPw);
+    		
+    		} catch (Exception e) {
+    			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR) // 500
+    					.body("관리자 계정 생성 중 문제 발생(서버 문의 바람)");
+    	}
+    }
+    
+    /** 관리자 계정 목록 조회
+     * @return
+     */
+    @GetMapping("adminAccountList")
+    public ResponseEntity<Object> adminAccountList() {
+    	try {
+    		List<Member> adminList = service.adminAccountList();
+    		return ResponseEntity.status(HttpStatus.OK).body(adminList);
+    	
+    	}catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    		.body(null);
+    		
+    	} 
+    }
+    
+    /** 최대 조회수 게시글 조회
+     * @return
+     */
+    @GetMapping("maxReadCount")
+    public ResponseEntity<Object> maxReadCount() {
+    	try {
+    		Board board = service.maxReadCount();
+    		return ResponseEntity.status(HttpStatus.OK).body(board);
+    		
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    				.body(null);
+    	}
+    }
+    
+    
+    /** 탈퇴 회원 리스트 조회
+     * @return
+     */
+    @GetMapping("withdrawnMemberList")
+    public ResponseEntity<Object> selectWithdrawnMemberList() {
+    	// 성공 시 List<Member> 반환, 에러 발생했을 때 String -> Object
+    	try {
+    		List<Member> withdrawnMemberList = service.selectWithdrawnMemberList();
+    		return ResponseEntity.status(HttpStatus.OK).body(withdrawnMemberList);
+    		
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    				.body("탈퇴한 회원 목록 조회 중 문제 발생 : " + e.getMessage());
+    	}
+    }
+    
+    @PutMapping("restoreMember")
+    public ResponseEntity<String> restoreMember(@RequestBody Member member) {
+    	try {
+    		int result = service.restoreMember(member.getMemberNo());
+    		
+    		if(result > 0) {
+    			return ResponseEntity.status(HttpStatus.OK)
+    					.body(member.getMemberNo() + "번 회원 복구 완료");
+    		} else {
+				// BAD_REQUEST : 400 (잘못된 요청 - 요청 구문이 잘못되었거나 유효하지 않음)
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body("유효하지 않은 memberNo : " + member.getMemberNo());
+			}
+    		
+    	} catch (Exception e) {
+    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    				.body("탈퇴 회원 복구 중 문제 발생 : " + e.getMessage());
+    		}
+    	}
+    
+
+  
+
+
+}
+

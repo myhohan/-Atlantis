@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="finalProject.CustomerSatisfaction">
+  
+  
+  <!-- 고객만족도 페이지 만들 예정 지금 보니까 고객만족도 라든지 관리통계페이지 컨트롤러-->
+	<!-- 택배 접수하기 -->
+	<select id="raiseRequest">
+		SELECT {택배접수정보},
+		MEMBER_PW, AUTHORITY
+		FROM "MEMBER"
+		WHERE MEMBER_EMAIL = #{memberEmail}
+		AND AUTHORITY = 2
+		AND MEMBER_DEL_FL = 'N'
+	</select>
+	
+</mapper>

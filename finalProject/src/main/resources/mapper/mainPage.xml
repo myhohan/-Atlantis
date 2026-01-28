@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.finalproject.mapper.MainPageMapper">
+
+    <select id="selectTodayPostCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM POSTAL_ITEM
+        WHERE TO_CHAR(REG_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+    </select>
+
+    <select id="selectDeliveryPostCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM POSTAL_ITEM
+        WHERE TRANSPORT_STATUS = '배송중'
+    </select>
+
+    <select id="selectCompletePostCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM POSTAL_ITEM
+        WHERE TRANSPORT_STATUS = '배송완료'
+    </select>
+
+    <select id="selectAveragePostingTime" resultType="double">
+        SELECT AVG(COMPLETE_DATE - REG_DATE)
+        FROM POSTAL_ITEM
+        WHERE TRANSPORT_STATUS = '배송완료'
+          AND COMPLETE_DATE IS NOT NULL
+    </select>
+
+</mapper>

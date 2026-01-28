@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.finalproject.mapper.MemberMapper">
+
+    <select id="login" parameterType="string" resultType="com.kh.finalproject.dto.Member">
+        SELECT 
+            MEMBER_NO,
+            MEMBER_EMAIL,
+            MEMBER_PW,
+            MEMBER_NICKNAME,
+            MEMBER_TEL,
+            MEMBER_ADDRESS,
+            PROFILE_IMG,
+            ENROLL_DATE,
+            MEMBER_DEL_FL,
+            AUTHORITY
+        FROM MEMBER
+        WHERE MEMBER_EMAIL = #{memberEmail}
+        AND MEMBER_DEL_FL = 'N'
+    </select>
+
+    <select id="checkEmail" parameterType="string" resultType="_int">
+        SELECT COUNT(*) FROM MEMBER
+        WHERE MEMBER_EMAIL = #{memberEmail}
+        AND MEMBER_DEL_FL = 'N'
+    </select>
+    
+    <select id="checkNickname" parameterType="string" resultType="_int">
+        SELECT COUNT(*) FROM MEMBER
+        WHERE MEMBER_NICKNAME = #{memberNickname}
+        AND MEMBER_DEL_FL = 'N'
+    </select>
+
+    <insert id="signup" parameterType="com.kh.finalproject.dto.Member">
+        INSERT INTO MEMBER (
+            MEMBER_NO, 
+            MEMBER_EMAIL, 
+            MEMBER_PW, 
+            MEMBER_NICKNAME, 
+            MEMBER_TEL, 
+            MEMBER_ADDRESS, 
+            AUTHORITY, 
+            MEMBER_DEL_FL, 
+            ENROLL_DATE
+        ) VALUES (
+            SEQ_MEMBER_NO.NEXTVAL, 
+            #{memberEmail}, 
+            #{memberPw}, 
+            #{memberNickname}, 
+            #{memberTel}, 
+            #{memberAddress}, 
+            DEFAULT, 
+            DEFAULT, 
+            DEFAULT
+        )
+    </insert>
+
+</mapper>

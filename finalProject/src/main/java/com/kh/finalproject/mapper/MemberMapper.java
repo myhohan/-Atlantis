@@ -1,0 +1,54 @@
+package com.kh.finalproject.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.kh.finalproject.dto.Member;
+
+@Mapper
+public interface MemberMapper {
+	/** 로그인 SQL 실행
+	 * @param memberEmail
+	 * @return loginMember
+	 */
+	Member login(String memberEmail) throws Exception;
+	
+	/** 이메일 중복 검사 SQL 실행
+	 * @param memberEmail
+	 * @return count
+	 */
+	int checkEmail(String memberEmail);
+	
+	/** 닉네임 중복 검사 SQL 실행
+	 * @param memberNickname
+	 * @return
+	 */
+	int checkNickname(String memberNickname);
+	
+	/** 회원가입 SQL 실행
+	 * @param inputMember
+	 * @return
+	 */
+	int signup(Member inputMember);
+	
+	/** 회원 목록 조회(비동기)
+	 * @return memberList
+	 */
+	List<Member> selectMemberList();
+	
+	/** 비밀번호 초기화(비동기)
+	 * @param map
+	 * @return
+	 */
+	int resetPw(Map<String, Object> map);
+	
+	/** 탈퇴 회원 복구(비동기)
+	 * @param inputNo
+	 * @return
+	 */
+	int restoreMember(int inputNo);
+	
+	
+}

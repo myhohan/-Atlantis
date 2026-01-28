@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.finalproject.mapper.CompanyManagementMapper">
+
+    <select id="selectTotalDeliveryCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM POSTAL_ITEM
+        WHERE MEMBER_DEL_FL = 'N'
+    </select>
+
+    <select id="selectActivePersonnelCount" parameterType="string" resultType="_int">
+        SELECT COUNT(*)
+        FROM PERSONNEL
+        WHERE STATUS = #{status}
+    </select>
+
+    <select id="selectCustomerSatisfaction" resultType="_int">
+        SELECT AVG(TOTAL_CUSTOMER_SATISFACTION)
+        FROM CUSTOMER_SATISFACTION
+    </select>
+
+    <select id="selectRecentDeliveryActivity" parameterType="string" resultType="string">
+        SELECT RECENT_ACTIVITY
+        FROM PERSONNEL
+        WHERE POST_NO = #{postNo}
+    </select>
+
+    <select id="selectPersonnelManagement" parameterType="string" resultType="map">
+        SELECT 
+            PERSONNEL_NAME, 
+            PERSONNEL_ID, 
+            PERSONNEL_TASKS, 
+            CUSTOMER_EVALUATION, 
+            STATUS
+        FROM PERSONNEL
+        WHERE PERSONNEL_NAME = #{personnelName}
+    </select>
+    
+    <select id="selectCurrentStatus" parameterType="string" resultType="string">
+        SELECT CURRENT_ACTIVITY
+        FROM DELIVERY_STATUS
+        WHERE POST_NO = #{postNo}
+    </select>
+
+    <select id="selectReportAnalysis" parameterType="string" resultType="com.kh.finalproject.dto.CompanyManagement">
+        SELECT 
+            POST_NO AS postNo,
+            STATUS AS status,
+            SUMMARY AS summary
+        FROM REPORT_TABLE
+        WHERE POST_NO = #{postNo}
+    </select>
+
+</mapper>

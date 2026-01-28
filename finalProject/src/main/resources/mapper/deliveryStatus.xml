@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.finalproject.mapper.DeliveryStatusMapper">
+
+    <select id="selectDeliveryByPostNo" parameterType="string" resultType="com.kh.finalproject.dto.DeliveryStatus">
+        SELECT 
+            POST_NO AS postNo,
+            SENDER_NAME AS senderName,
+            RECEPIENT_NAME AS recipientName,
+            TRANSPORT_STATUS AS transportStatus,
+            CURRENT_LOCATION AS currentLocation,
+            UPDATE_DATE AS updateDate
+        FROM POSTAL_ITEM
+        WHERE POST_NO = #{postNo}
+    </select>
+
+    <select id="selectTotalCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM POSTAL_ITEM
+    </select>
+
+    <select id="selectCountByStatus" parameterType="string" resultType="_int">
+        SELECT COUNT(*)
+        FROM POSTAL_ITEM
+        WHERE TRANSPORT_STATUS = #{status}
+    </select>
+
+    <select id="selectListByStatus" parameterType="string" resultType="com.kh.finalproject.dto.DeliveryStatus">
+        SELECT 
+            POST_NO AS postNo,
+            SENDER_NAME AS senderName,
+            RECEPIENT_NAME AS recipientName,
+            TRANSPORT_STATUS AS transportStatus
+        FROM POSTAL_ITEM
+        WHERE TRANSPORT_STATUS = #{status}
+        ORDER BY UPDATE_DATE DESC
+    </select>
+
+    <select id="selectAllList" resultType="com.kh.finalproject.dto.DeliveryStatus">
+        SELECT 
+            POST_NO AS postNo,
+            SENDER_NAME AS senderName,
+            RECEPIENT_NAME AS recipientName,
+            TRANSPORT_STATUS AS transportStatus
+        FROM POSTAL_ITEM
+        ORDER BY UPDATE_DATE DESC
+    </select>
+
+</mapper>
