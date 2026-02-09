@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.finalproject.mapper.DeliveryLostandfoundMapper">
+
+    <select id="selectTotalReportCount" resultType="_int">
+        SELECT COUNT(*) 
+        FROM LOST_AND_FOUND
+    </select>
+
+    <select id="selectTotalInvestigationCount" parameterType="string" resultType="_int">
+        SELECT COUNT(*) 
+        FROM LOST_AND_FOUND
+        WHERE STATUS = #{status}
+    </select>
+
+    <select id="selectTotalDiscoverCount" parameterType="string" resultType="_int">
+        SELECT COUNT(*) 
+        FROM LOST_AND_FOUND
+        WHERE DISCOVER_STATUS = #{status}
+    </select>
+
+    <insert id="insertReport" parameterType="com.kh.finalproject.dto.DeliveryLostandFound">
+        INSERT INTO LOST_AND_FOUND (
+            POST_NO,
+            LOSS_TYPE,
+            REQUEST_EXPLANATION,
+            REPORT_DATE,
+            STATUS
+        ) VALUES (
+            #{postNo},
+            #{lossType},
+            #{requestExplanation},
+            SYSDATE,
+            #{status}
+        )
+    </insert>
+
+</mapper>

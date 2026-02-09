@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     // 기본적으로 발생하는 이벤트 막음
 
     // 비동기 로그인 요청 -> 서버로
-    const response = await axiosApi.post("/admin/login",
+    const response = await axiosApi.post("http://localhost:8080/admin/login",
       { memberEmail : email, memberPw : password }
     );
     console.log(response);

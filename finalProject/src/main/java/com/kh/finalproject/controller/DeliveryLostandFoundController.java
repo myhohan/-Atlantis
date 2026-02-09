@@ -1,5 +1,6 @@
 package com.kh.finalproject.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,13 +14,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestController
-@RequestMapping("deliverylostandfound")
+@Controller
+@RequestMapping("api/lostandfound")
 @RequiredArgsConstructor
 public class DeliveryLostandFoundController {
 
     private final DeliveryLostandFoundService service;
 
+    
     /**
      * 전체 보고서 갯수 조회
      * GET 방식 권장

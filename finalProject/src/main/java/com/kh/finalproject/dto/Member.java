@@ -1,5 +1,7 @@
 package com.kh.finalproject.dto;
 
+import java.io.Serializable;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Member {
+public class Member implements Serializable{
 	
 	public static final int LEVEL_USER=1;
 	public static final int LEVEL_ADMIN=2;

@@ -18,4 +18,8 @@ public interface EmailService {
 	 * @return
 	 */
 	int checkAuthKey(Map<String, String> map);
+
+	String sendEmail(String email, String subject, String body);
+
+	String sendEmail(String email);
 }

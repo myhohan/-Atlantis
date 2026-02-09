@@ -1,0 +1,86 @@
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>질문게시판</title>
+    <style>
+        /* (자유게시판과 동일한 CSS 생략 - 실제로는 style.css로 분리 추천) */
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8f9fa; padding: 30px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; }
+        h2 { color: #28a745; border-bottom: 2px solid #28a745; padding-bottom: 15px; margin-bottom: 20px; }
+        
+        table { width: 100%; border-collapse: collapse; text-align: center; }
+        th { background-color: #f1f3f5; padding: 12px; border-bottom: 2px solid #ddd; }
+        td { padding: 12px; border-bottom: 1px solid #eee; color: #555; }
+        tr:hover { background-color: #f8f9fa; cursor: pointer; }
+        .btn-write { float: right; background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; text-decoration: none; }
+        
+        .paging-area button { background: white; border: 1px solid #ddd; padding: 5px 10px; margin: 0 2px; }
+
+        /* 🔥 질문게시판 전용 스타일: 뱃지 */
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white; margin-right: 5px; }
+        .badge-wait { background-color: #ffc107; color: #333; }  /* 답변대기 (노랑) */
+        .badge-done { background-color: #28a745; }               /* 답변완료 (초록) */
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>❓ 질문게시판</h2>
+
+        <div style="margin-bottom: 15px; text-align: right;">
+            <form action="/board/qna/list" method="get">
+                <input type="text" name="keyword" placeholder="궁금한 내용을 검색해보세요">
+                <button type="submit">검색</button>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th width="10%">번호</th>
+                    <th width="15%">상태</th> <th width="45%">제목</th>
+                    <th width="15%">작성자</th>
+                    <th width="15%">작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(list)}">
+                    <td colspan="5">등록된 질문이 없습니다.</td>
+                </tr>
+
+                <tr th:each="b : ${list}" th:onclick="|location.href='@{/board/qna/detail(no=${b.boardNo})}'|">
+                    <td th:text="${b.boardNo}">1</td>
+                    
+                    <td>
+                        <span th:if="${b.replyCount == 0}" class="badge badge-wait">답변대기</span>
+                        <span th:if="${b.replyCount > 0}" class="badge badge-done">답변완료</span>
+                    </td>
+
+                    <td th:text="${b.title}" style="text-align: left;">질문있습니다</td>
+                    <td th:text="${b.boardWriter}">김학생</td>
+                    <td th:text="${b.createDate}">2026-01-21</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a href="/board/qna/enroll" class="btn-write">질문하기</a>
+        <div style="clear: both; margin-bottom: 20px;"></div>
+
+        <div class="paging-area" align="center" th:if="${pi.maxPage > 0}">
+            <button th:if="${pi.currentPage > 1}" th:onclick="|location.href='@{/board/qna/list(cpage=${pi.currentPage - 1})}'|">&lt;</button>
+            
+            <th:block th:each="p : ${#numbers.sequence(pi.startPage, pi.endPage)}">
+                <button th:if="${p == pi.currentPage}" style="background: #28a745; color: white;" disabled>[[${p}]]</button>
+                <button th:if="${p != pi.currentPage}" th:onclick="|location.href='@{/board/qna/list(cpage=${p})}'|">[[${p}]]</button>
+            </th:block>
+
+            <button th:if="${pi.currentPage < pi.maxPage}" th:onclick="|location.href='@{/board/qna/list(cpage=${pi.currentPage + 1})}'|">&gt;</button>
+        </div>
+    </div>
+
+</body>
+</html>

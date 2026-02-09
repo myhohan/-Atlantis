@@ -136,6 +136,14 @@ public class MemberServiceImpl implements MemberService {
 
 		return mapper.restoreMember(inputNo);
 	}
+	
+	// 회원번호 조회 서비스 (로그인세션)
+	
+	@Override
+	public Member selectMemberByNo(int memberNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
 

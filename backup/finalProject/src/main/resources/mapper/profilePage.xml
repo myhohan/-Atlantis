@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kh.finalProject.ProfilePageMapper">
+ 	<!-- 프로필 내용 조회 -->
+	<select id="profileInformation" resultType="com.kh.finalProject.profilePage">
+		SELECT MEMBER_NO as memberNo, 
+			   MEMBER_ID as memberID, 
+			   MEMBER_NAME as memberName, 
+			   MEMBER_PHONE as memberPhone, 
+			   PROFILE_IMG as memberImg
+		FROM MEMBER
+		WHERE MEMBER_ID = #{inputID}
+	</select>
+	
+	<!-- 프로필 수정 -->
+	<update id="profileUpdate">
+		UPDATE MEMBER_NO as memberNo, 
+			   MEMBER_ID as memberID, 
+			   MEMBER_NAME as memberName, 
+			   MEMBER_PHONE as memberPhone, 
+			   PROFILE_IMG as memberProfileImg
+		FROM MEMBER
+		WHERE MEMBER_ID = #{loginID}
+		<!-- 세션 관리 로그인 -->
+	</update>
+	
+	<!-- 총 택배 건수 확인 -->
+	<select id="totalRaisedRequests" resultType="com.kh.finalProject.profilePage">
+		COUNT(*) POST_NO as postNo,
+		FROM POST
+		WHERE MEMBER_ID= #{loginID}	
+	</select>
+	
+	<!-- 사용 금액 SQL 만들어야됨 -->
+	<!-- 총 사용 금액 확인 -->
+	<select id="totalPayments" resultType="com.kh.finalproject.profilePage">
+		SELECT TOTAL_PAYMENT as totalPayment;
+		FROM PAYMENT
+	</select>
+	
+	
+	
+	
+	
+	
+</mapper>

@@ -1,6 +1,8 @@
 package com.kh.finalproject.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.kh.finalproject.dto.DeliveryStatus;
 
 public interface DeliveryStatusService {
@@ -15,5 +17,7 @@ public interface DeliveryStatusService {
     int getCountByStatus(String status);
     
     // 배송 목록 조회 (필터: 전체 or 특정상태)
-    List<DeliveryStatus> getDeliveryList(String filterStatus);
+    List<DeliveryStatus> getDeliveryList(String status);
+
+	Map<String, Object> selectDeliveryList(Map<String, Object> paramMap, int cp);
 }

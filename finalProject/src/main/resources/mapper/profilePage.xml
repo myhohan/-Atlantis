@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kh.finalProject.ProfilePageMapper">
+<mapper namespace="com.kh.finalproject.mapper.ProfilePageMapper">
  	<!-- 프로필 내용 조회 -->
-	<select id="profileInformation" resultType="com.kh.finalProject.profilePage">
+	<select id="profileInformation" resultType="com.kh.finalproject.dto.Profile">
 		SELECT MEMBER_NO as memberNo, 
 			   MEMBER_ID as memberID, 
 			   MEMBER_NAME as memberName, 
@@ -25,7 +25,7 @@
 	</update>
 	
 	<!-- 총 택배 건수 확인 -->
-	<select id="totalRaisedRequests" resultType="com.kh.finalProject.profilePage">
+	<select id="totalRaisedRequests" resultType="com.kh.finalproject.dto.Profile">
 		COUNT(*) POST_NO as postNo,
 		FROM POST
 		WHERE MEMBER_ID= #{loginID}	
@@ -33,7 +33,7 @@
 	
 	<!-- 사용 금액 SQL 만들어야됨 -->
 	<!-- 총 사용 금액 확인 -->
-	<select id="totalPayments" resultType="com.kh.finalproject.profilePage">
+	<select id="totalPayments" resultType="com.kh.finalproject.dto.Profile">
 		SELECT TOTAL_PAYMENT as totalPayment;
 		FROM PAYMENT
 	</select>

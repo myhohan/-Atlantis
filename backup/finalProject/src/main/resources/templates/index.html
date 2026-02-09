@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>택배 관리 시스템</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen bg-gray-50">
+<nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-20"> <div class="flex items-center">
+                    <a href="/index" class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white border-2 border-blue-600 rounded-lg flex items-center justify-center">
+                            <i data-lucide="package" class="text-blue-600 w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-lg font-bold text-gray-900 leading-none">택배 관리</span>
+                            <span class="text-lg font-bold text-gray-900 leading-none">시스템</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="/index" class="flex flex-col items-center justify-center px-4 py-2 rounded-lg bg-blue-50 text-blue-600 group hover:bg-blue-50">
+                        <i data-lucide="box" class="w-5 h-5 mb-1"></i>
+                        <span class="text-xs font-semibold">메인</span>
+                    </a>
+
+                    <a href="/register" class="flex flex-col items-center justify-center px-4 py-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors">
+                        <i data-lucide="file-text" class="w-5 h-5 mb-1"></i>
+                        <span class="text-xs font-medium">택배 접수</span>
+                    </a>
+
+                    <a href="/status" class="flex flex-col items-center justify-center px-4 py-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors">
+                        <i data-lucide="truck" class="w-5 h-5 mb-1"></i>
+                        <span class="text-xs font-medium">접수 현황</span>
+                    </a>
+
+                    <a href="/payment" class="flex flex-col items-center justify-center px-4 py-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors">
+                        <i data-lucide="credit-card" class="w-5 h-5 mb-1"></i>
+                        <span class="text-xs font-medium">결제 관리</span>
+                    </a>
+
+                    <a href="/tracking" class="flex flex-col items-center justify-center px-4 py-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors">
+                        <i data-lucide="map-pin" class="w-5 h-5 mb-1"></i>
+                        <span class="text-xs font-medium">경로 확인</span>
+                    </a>
+
+                    <a href="/loss" class="flex flex-col items-center justify-center px-4 py-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors">
+                        <i data-lucide="clock" class="w-5 h-5 mb-1"></i>
+                        <span class="text-xs font-medium">분실 추적</span>
+                    </a>
+
+                    <a href="/mypage" class="flex flex-col items-center justify-center px-4 py-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors">
+                        <i data-lucide="user" class="w-5 h-5 mb-1"></i>
+                        <span class="text-xs font-medium">마이 페이지</span>
+                    </a>
+
+                    <a href="/company-management" class="flex flex-col items-center justify-center px-4 py-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-gray-50 transition-colors">
+                        <i data-lucide="building-2" class="w-5 h-5 mb-1"></i>
+                        <span class="text-xs font-medium">회사 관리</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <a href="login.html" class="flex flex-col justify-center items-center w-16 h-10 border border-blue-200 text-blue-600 rounded-lg text-sm font-semibold hover:bg-blue-50 hover:border-blue-300 transition-colors">
+                        로그인
+                    </a>
+                    <a href="signup.html" class="flex flex-col justify-center items-center w-20 h-10 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 shadow-sm transition-colors">
+                        회원가입
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-5xl font-bold mb-6">빠르고 안전한 택배 관리</h1>
+            <p class="text-xl mb-8 text-blue-100">실시간 추적과 간편한 관리로 택배 업무를 효율적으로</p>
+            <div class="flex justify-center space-x-4">
+                <a href="register.html" class="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors">택배 접수하기</a>
+                <a href="tracking.html" class="px-8 py-3 bg-blue-700 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors">배송 조회</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="stats-container">
+                </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">주요 기능</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="features-container">
+                </div>
+        </div>
+    </section>
+
+    <script>
+        // 아이콘 초기화
+        lucide.createIcons();
+
+        // 데이터 정의
+        const stats = [
+            { label: '오늘 접수', value: '1,234', icon: 'package' },
+            { label: '배송중', value: '5,678', icon: 'truck' },
+            { label: '배송완료', value: '12,345', icon: 'shield' },
+            { label: '평균 배송시간', value: '24시간', icon: 'clock' },
+        ];
+
+        const features = [
+            { icon: 'file-text', title: '택배 접수', description: '간편한 택배 접수 시스템', link: 'register.html', color: 'bg-blue-500' },
+            { icon: 'package', title: '접수 현황', description: '실시간 택배 접수 현황 확인', link: 'status.html', color: 'bg-green-500' },
+            { icon: 'credit-card', title: '결제 관리', description: '택배 요금 및 결제 내역', link: 'payment.html', color: 'bg-purple-500' },
+            { icon: 'map-pin', title: '경로 확인', description: '택배 배송 경로 추적', link: 'tracking.html', color: 'bg-orange-500' },
+            { icon: 'alert-circle', title: '분실 추적', description: '분실 택배 신고 및 추적', link: 'loss.html', color: 'bg-red-500' },
+            { icon: 'building-2', title: '회사 관리', description: '관리자 전용 대시보드', link: 'company-management.html', color: 'bg-gray-800' },
+        ];
+
+        // Stats 렌더링
+        const statsContainer = document.getElementById('stats-container');
+        stats.forEach(stat => {
+            const div = document.createElement('div');
+            div.className = 'bg-gray-50 rounded-lg p-6 text-center';
+            div.innerHTML = `
+                <i data-lucide="${stat.icon}" class="w-8 h-8 mx-auto mb-3 text-blue-600"></i>
+                <div class="text-3xl font-bold text-gray-900 mb-1">${stat.value}</div>
+                <div class="text-sm text-gray-600">${stat.label}</div>
+            `;
+            statsContainer.appendChild(div);
+        });
+
+        // Features 렌더링
+        const featuresContainer = document.getElementById('features-container');
+        features.forEach(feature => {
+            const a = document.createElement('a');
+            a.href = feature.link;
+            a.className = 'bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow block';
+            a.innerHTML = `
+                <div class="${feature.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                    <i data-lucide="${feature.icon}" class="w-6 h-6 text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">${feature.title}</h3>
+                <p class="text-gray-600">${feature.description}</p>
+            `;
+            featuresContainer.appendChild(a);
+        });
+
+        // 동적으로 추가된 아이콘 다시 초기화
+        lucide.createIcons();
+    </script>
+</body>
+</html>

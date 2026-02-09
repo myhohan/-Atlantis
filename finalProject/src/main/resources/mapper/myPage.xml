@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kh.finalProject.MyPageMapper">
- 	<!-- 프로필 내용 조회 -->
-	<select id="profileInformation" resultType="com.kh.finalProject.Mypage">
-		SELECT MEMBER_NO AS memberNo, 
-			   MEMBER_ID AS memberID, 
-			   MEMBER_NAME AS memberName, 
-			   MEMBER_PHONE AS memberPhone, 
-			   PROFILE_IMG as profileImg
-		FROM MEMBER
-		WHERE MEMBER_ID = #{loginID}
-		AND AUTHORITY = 2
-		AND MEMBER_DEL_FL = 'N'
-	</select>
+<mapper namespace="com.kh.finalproject.mapper.MyPageMapper">
+
+    <select id="selectProfile" resultType="com.kh.finalproject.dto.Mypage">
+        SELECT 
+            MEMBER_NO       AS memberNo, 
+            MEMBER_EMAIL    AS memberEmail, 
+            MEMBER_NICKNAME AS memberNickname, 
+            MEMBER_TEL      AS memberTel, 
+            NULL            AS memberAddress, 
+            TO_CHAR(ENROLL_DATE, 'YYYY-MM-DD') AS enrollDate,
+            PROFILE_IMG     AS profileImg
+        FROM "MEMBER"
+        WHERE MEMBER_NO = #{memberNo}
+        AND MEMBER_DEL_FL = 'N'
+    </select>
 	
-	
-	<!-- 프로필 수정 -->
-	<select id="profileUpdate" resultType="com.kh.finalProject.Mypage">
-		UPDATE MEMBER_NO AS memberNo, 
-		MEMBER_ID AS memberID, 
-		MEMBER_NAME AS memberName, 
-		MEMBER_PHONE AS memberPhone, 
-		PROFILE_IMG As memberImg
-		FROM MEMBER
-		WHERE MEMBER_ID = #{아이디 담을 객체}
-	</select>
-	
-	<!-- 총 택배 건수 확인 -->
-	<select id="totalRaisedRequests">
-		SELECT COUNT(*) POST_NO
-		FROM POST
-		WHERE MEMBER_ID= #{memberID}
-		<!-- 송장번호가 아닌 ID로 확인해야함-->	
-	</select>
-	
-	<!-- 사용 금액 SQL 만들어야됨 -->
-	<!-- 총 사용 금액 확인 -->
-	<select id="totalPayments">
-		SELECT TOTAL_PAYMENT
-		FROM PAYMENT
-		WHERE TOTAL_PAYMENT = #{totalPayment}
-	<!-- 멤버의 결제금액을 별도로 관리-->
-	</select>
-	
-	
-	
-	
-	
-	
+    <select id="selectMyParcelList" resultType="com.kh.finalproject.dto.DeliveryRequest">
+        SELECT 
+            POST_NO          AS postNo, 
+            0                AS postWeight, 
+            TRANSPORT_STATUS AS transportStatus, 
+            TO_CHAR(REG_DATE, 'YYYY-MM-DD') AS regDate,
+            0                AS postPrice
+        FROM POSTAL_ITEM 
+        ORDER BY REG_DATE DESC
+    </select>
+
+    <select id="selectMyPaymentList" resultType="com.kh.finalproject.dto.DeliveryRequest">
+        SELECT 
+            P.POST_NO        AS postNo, 
+            0                AS postWeight, 
+            'Y'              AS isPayment,
+            TO_CHAR(P.REG_DATE, 'YYYY-MM-DD') AS regDate
+        FROM POSTAL_ITEM P
+        ORDER BY P.REG_DATE DESC
+    </select>
+   
+    <update id="updateInfo">
+        UPDATE "MEMBER"
+        SET 
+            MEMBER_NICKNAME = #{memberNickname},
+            MEMBER_TEL = #{memberTel}      
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+   
 </mapper>

@@ -1,141 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kh.finalProject.CompanyManagementMapper">
- 	<!-- 총 배송 건수 표시 -->
-	<select id="totalDelivery" resultType="com.kh.finalProject.CompanyManagement">
-		SELECT COUNT(*) POST_NO AS totaldeliveryNumber
+<mapper namespace="com.kh.finalproject.mapper.MonthlyTransportReportMapper">
+
+	<select id="totalDelivery" resultType="com.kh.finalproject.dto.CompanyManagement">
+		SELECT COUNT(POST_NO) AS totaldeliveryNumber
 		FROM POSTAL_ITEM
-		AND AUTHORITY = 2
+		WHERE AUTHORITY = 2
 		AND MEMBER_DEL_FL = 'N'
 	</select>
 	
-	<!-- 활성 기사 SQL 필요
-
-
-	기사 목록
-	기사 정보	기사 ID  배송 건수	평점	상태	작업     최근 배송 활동 실시간 배송  현황 기사 성과 평가 -->
-	<!-- 활성 기사 표시 -->
-	<select id="activePersonnel" resultType="com.kh.finalProject.CompanyManagement">
-		SELECT COUNT(*) FROM PERSONNEL_NAME as personnelName;
+	<select id="activePersonnel" resultType="com.kh.finalproject.dto.CompanyManagement">
+		SELECT COUNT(*) 
+		FROM PERSONNEL_NAME
 	</select>
-	<!-- 월 매출 SQL 필요
-	POST 에서 가져오고 금액 곱한 값을 매출로 표현하면됨 -->
 
-
-	<!-- 월 매출 -->
-	<select id="monthlyProfit" resultType="com.kh.finalProject.CompanyManagement">
-		SELECT TOTAL_MONTHLY_PROFIT as monthlyProfit;
+	<select id="monthlyProfit" resultType="com.kh.finalproject.dto.CompanyManagement">
+		SELECT TOTAL_MONTHLY_PROFIT as monthlyProfit
 		FROM MONTHLY_PROFIT
-		WHERE POST_NUMBER * POST_PRICE
-	
-	</select>
+		</select>
 
-
-	<!-- 고객만족도 테이블 작성 필요 -->
-	
-	<!-- 고객만족도 -->
-	<select id="customerSatisfaction" resultType="com.kh.finalProject.CompanyManagement">
-		SELECT TOTAL_CUSTOMER_SATISFACTION as customerEvaluation;
-		FROM {CUSTOMER_SATISFACTION}
-		WHERE TOTAL_CUSTOMER_SATISFACTION = NOT NULL
+	<select id="customerSatisfaction" resultType="com.kh.finalproject.dto.CompanyManagement">
+		SELECT TOTAL_CUSTOMER_SATISFACTION as customerEvaluation
+		FROM CUSTOMER_SATISFACTION
+		WHERE TOTAL_CUSTOMER_SATISFACTION IS NOT NULL
 	</select>
 	
-	<!-- 최근 배송 활동 SQL 작성 필요 -->
-	
-	<!-- 개요 선택 시 최근 배송 활동 표시 -->
-	<!-- POST_NO PK로 모두 기입 필요 -->
-	<select id="recentDeliveryActivity" resultType="com.kh.finalProject.CompanyManagement">
-			
+	<select id="recentDeliveryActivity" resultType="com.kh.finalproject.dto.CompanyManagement">
 		SELECT POST_NO as postNo, 
-			   RECENT_ACTIVITY as recentDeliveryActivity;
+			   RECENT_ACTIVITY as recentDeliveryActivity
 		FROM PERSONNEL
-		WHERE PERSONNEL_COMPANY = personnelCompany;
 		</select>
 	
-	<!-- 기사 정보 페이지 만들어놨음
-	이름 ID 배송 건수 평점 상태 작업상세보기 -->
-	<!-- 기사 관리 선택 시 기사 정보 표시 -->
-	<select id="personnelManagement" resultType="com.kh.finalProject.CompanyManagement">
+	<select id="personnelManagement" resultType="com.kh.finalproject.dto.CompanyManagement">
 		SELECT PERSONNEL_NAME AS personnelName, 
 			   PERSONNEL_ID AS personnelID, 
 			   PERSONNEL_TASKS,  
 			   CUSTOMER_EVALUATION AS customerEvaluation, 
 			   STATUS AS Status
 		FROM PERSONNEL
-			</select>
+	</select>
 	
-	<!-- 배송 현황 선택 시 실시간 배송 현황 표시 -->
-	<select id="currentStatus" resultType="com.kh.finalProject.CompanyManagement">
+	<select id="currentStatus" resultType="com.kh.finalproject.dto.CompanyManagement">
 		SELECT POST_NO AS postNo, 
 			   PERSONNEL_NAME AS personnelName, 
-			   CURRENT_ACTIVITY AS Status,
+			   CURRENT_ACTIVITY AS Status
 		FROM DELIVERY_STATUS
-		
 	</select>
-	
-	<!-- SQL 추가 -->
-	
-	<select id="totalDelivery" resultType="com.kh.finalProject.CompanyManagement">
-		COUNT(*) postNo,
-		FROM POST_DELIVERY
-	
-	<!-- POST DELIVERY에서 등록된 운송품들의 번호 개수를 확인 -->
-	
-	</select>
-	
-	<select id="customerSatisfaction"  resultType="com.kh.finalProject.CompanyManagement">
-		SELECT CUSTOMER_SATISFACTION as customersatisfaction,
-		FROM CUSTOMER
-		
-	<!-- 고객만족도 SQL 만들어야됨 -->
-	</select>
-	
-	<select id="activePersonnel"  resultType="com.kh.finalProject.CompanyManagement">
-		SELECT DELIVERY_STATUS, PERSONNEL_NAME, POSTAL_NO
-		FROM PERSONNEL,
-		WHERE DELIVERY_STATUS = "배송중"
-	<!-- 배송 상태 배송중인 사원의 배송상태, 이름, 운송장번호 조회-->
-	</select>
-	
-	
-	<select id="recentDeliveryActivity" resultType="com.kh.finalProject.CompanyManagement">
-		SELECT DELIVERY_STATUS,
-		FROM PERSONNEL,
-		WHERE DELIVERY_STATUS = NOT NULL;
-	
-	<!-- 최근 배송 상태가 NULL이 아니면 조회함-->	
-	
-	
-	</select>
-	
-	<select id="personnelManagement" resultType="com.kh.finalProject.CompanyManagement">
-		SELECT PERSONNEL_NAME, STATUS, POSTAL_NO,
-		FROM PERSONNEL
-	
-	<!-- 기사 관리 배송 관리 이름, 상태, 운송장번호-->
-	</select>
-	
-	
-	<select id="reportAnalysis" resultType="com.kh.finalProject.CompanyManagement">
-		SELECT POSTAL_NO, STATUS, PERSONNELNAME,
-		FROM PERSONNEL
-		
-	<!-- 리포트 분석 운송장번호, 상태, 이름 -->
-	</select>
-	<!-- 리포트 선택시 리포트 출력되어야 됨
-	리포트 페이지 별도로 만들기 -->
-
-<!--
-	리포트 선택 시 메뉴 출력
-	<select id="reportAnalysis"
-		SELECT {리포트 메뉴출력}
-		FROM {리포트 테이블}
-		WHERE {아이디} = #{일치여부 확인}
-		AND {권한설정} = 1
-		AND MEMBER_DEL_FL = 'N'
-	</select>
-	-->
-</mapper>
-
-
-<!-- 리포트 SQL -->
+	</mapper>

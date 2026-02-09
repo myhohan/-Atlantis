@@ -14,18 +14,6 @@
             <p class="text-gray-600">송장번호로 실시간 배송 상태를 추적하세요</p>
         </div>
 
-        <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
-            <form id="trackingForm" class="max-w-2xl mx-auto">
-                <label class="block text-sm font-medium text-gray-700 mb-3">송장번호 입력</label>
-                <div class="flex gap-3">
-                    <div class="flex-1 relative">
-                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
-                        <input type="text" id="trackingNumber" placeholder="송장번호 (예: PKG-2024-001)" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    </div>
-                    <button type="submit" class="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">조회</button>
-                </div>
-            </form>
-        </div>
 
         <div id="resultArea" class="hidden">
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
@@ -57,13 +45,80 @@
             </div>
         </div>
 
-        <div id="emptyState" class="bg-gray-50 rounded-lg p-12 text-center">
-            <i data-lucide="map-pin" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">송장번호를 입력하세요</h3>
-            <p class="text-gray-600">송장번호를 입력하면 실시간으로 배송 상태를 확인할 수 있습니다</p>
-        </div>
+
+        <form action="https://info.sweettracker.co.kr/tracking/5" method="post" class="mt-8 space-y-6" target="_blank">
+            
+            <div>
+                <label for="t_key" class="block text-sm font-medium text-gray-700 mb-1">API Key</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="key" class="h-5 w-5 text-gray-400"></i>
+                    </div>
+                    <input type="text" id="t_key" name="t_key" placeholder="발급받은 API 키를 입력하세요" required
+                        value="Zp72pEYHb0r4gCgBCowliQ" 
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                        readonly> <p class="mt-1 text-xs text-gray-500">* 위 키는 테스트용 샘플 키입니다.</p>
+                </div>
+            </div>
+
+            <div>
+                <label for="t_code" class="block text-sm font-medium text-gray-700 mb-1">택배사</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="package" class="h-5 w-5 text-gray-400"></i>
+                    </div>
+                    <input type="text" id="t_code" name="t_code" placeholder="택배사 코드 (예: 04)" required
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors">
+                </div>
+                <p class="mt-1 text-xs text-gray-500">CJ대한통운: 04, 우체국: 01, 한진: 05, 롯데: 08</p>
+            </div>
+
+            <div>
+                <label for="t_invoice" class="block text-sm font-medium text-gray-700 mb-1">운송장 번호</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="file-text" class="h-5 w-5 text-gray-400"></i>
+                    </div>
+                    <input type="text" id="t_invoice" name="t_invoice" placeholder="- 없이 숫자만 입력" required
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors">
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" 
+                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-md hover:shadow-lg">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <i data-lucide="search" class="h-5 w-5 text-blue-500 group-hover:text-blue-400"></i>
+                    </span>
+                    배송 조회하기
+                </button>
+            </div>
+        </form>
     </div>
 
+    <script>
+        // 아이콘 실행
+        lucide.createIcons();
+    </script>
+
+  <!--<form action="https://info.sweettracker.co.kr/tracking/5" method="post">
+            <div class="form-group">
+              <label for="t_key">API key</label>
+              <input type="text" class="form-control" id="t_key" name="t_key" placeholder="Zp72pEYHb0r4gCgBCowliQ">
+            </div>
+            <div class="form-group">
+              <label for="t_code">택배사 코드</label>
+              <input type="text" class="form-control" name="t_code" id="t_code" placeholder="택배사 코드">
+            </div>
+            <div class="form-group">
+              <label for="t_invoice">운송장 번호</label>
+              <input type="text" class="form-control" name="t_invoice" id="t_invoice" placeholder="운송장 번호">
+            </div>
+            <button type="submit" class="btn btn-default">조회하기</button>
+        </form>s--> 
+        
+    
+    </div>
     <script>
         lucide.createIcons();
         const events = [

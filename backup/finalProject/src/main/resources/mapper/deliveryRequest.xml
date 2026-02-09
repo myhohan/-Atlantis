@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.finalproject.mapper.DeliveryRequestMapper">
+
+    <insert id="insertDeliveryRequest" parameterType="com.kh.finalproject.dto.DeliveryRequest">
+        INSERT INTO POSTAL_ITEM (
+            POST_NO,
+            SENDER_NAME,
+            SENDER_PHONE,
+            SENDER_EMAIL,
+            SENDER_ADDRESS,
+            RECEPIENT_NAME,
+            RECEPIENT_PHONE,
+            RECEPIENT_ADDRESS,
+            POST_TYPE,
+            POST_WEIGHT,
+            POST_EXPLANATION,
+            AUTHORITY,
+            MEMBER_DEL_FL
+        ) VALUES (
+            SEQ_POST_NO.NEXTVAL,
+            #{senderName},
+            #{senderPhone},
+            #{senderEmail},
+            #{senderAddress},
+            #{recipientName},
+            #{recipientPhone},
+            #{recipientAddress},
+            #{postType},
+            #{postWeight},
+            #{postExplanation},
+            2,
+            'N'
+        )
+    </insert>
+
+</mapper>
+

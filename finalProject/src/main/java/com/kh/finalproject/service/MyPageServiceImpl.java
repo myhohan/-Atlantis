@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.finalproject.dto.DeliveryRequest;
 import com.kh.finalproject.dto.Member;
+import com.kh.finalproject.dto.Mypage;
 import com.kh.finalproject.dto.UploadFile;
 import com.kh.finalproject.mapper.MyPageMapper;
 
@@ -32,7 +34,7 @@ public class MyPageServiceImpl implements MyPageProfileService {
 	@Autowired
 	private BCryptPasswordEncoder bcrypt;
 	
-	@Value("${my.profile.web-path")
+	@Value("${my.profile.web-path}")
 	private String profileWebPath; // /myPage/profile/
 	
 	@Value("${my.profile.folder-path}")
@@ -40,27 +42,27 @@ public class MyPageServiceImpl implements MyPageProfileService {
 	
 	// 회원 정보 수정
 	@Override
-	public int updateInfo(Member inputMember, String[] memberAddress) {
-		
-		// 입력된 주소가 있을 경우
-		// A^^^B^^^C 형태로 가공
-		
-		// 주소가 입력되었을 때
-		if (!inputMember.getMemberAddress().equals(",,")) {
-			String address = String.join("^^^",memberAddress);
-			inputMember.setMemberAddress(address);
-		} else {
-			// 주소가 입력되지 않았을 때
-			inputMember.setMemberAddress(null);
-		}
-		
-		// inputMember : 수정 닉네임, 수정 전화번호, 수정 주소,
-		// 회원 번호
-		
-		return mapper.updateInfo(inputMember);
-		
-		
-	}
+    public int updateInfo(Member inputMember, String[] memberAddress) {
+        
+        // [수정 전 문제 코드] 
+        // if (!inputMember.getMemberAddress().equals(",,")) { ... }
+        // -> inputMember 안에는 주소가 없어서 이 코드가 실행되지 않았음!
+
+        // ▼▼▼ [수정 후 정답 코드] 받아온 배열(memberAddress)을 확인해야 함 ▼▼▼
+        if (memberAddress != null && memberAddress.length > 0) {
+            // 1. 배열 요소를 "^^^" 구분자로 합침 (예: 12345^^^서울시^^^강남구)
+            String address = String.join("^^^", memberAddress);
+            
+            // 2. 합친 주소를 Member 객체에 세팅
+            inputMember.setMemberAddress(address);
+        } else {
+            // 주소가 아예 안 넘어왔으면 null 처리
+            inputMember.setMemberAddress(null);
+        }
+        
+        // 3. DB 업데이트 실행
+        return mapper.updateInfo(inputMember);
+    }
 	
 	// 비밀번호 변경 서비스
 		@Override
@@ -289,9 +291,20 @@ public class MyPageServiceImpl implements MyPageProfileService {
 		}
 		
 		
+		@Override
+	    public Mypage selectProfile(int memberNo) {
+	        return mapper.selectProfile(memberNo);
+	    }
 		
-		
-		
+		@Override
+	    public List<DeliveryRequest> selectMyParcelList(int memberNo) {
+	        return mapper.selectMyParcelList(memberNo);
+	    }
+
+	    @Override
+	    public List<DeliveryRequest> selectMyPaymentList(int memberNo) {
+	        return mapper.selectMyPaymentList(memberNo);
+	    }
 		
 		
 		

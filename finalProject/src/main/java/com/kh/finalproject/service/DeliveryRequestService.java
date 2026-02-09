@@ -10,6 +10,8 @@ public interface DeliveryRequestService {
      * @param requestList
      * @return 성공한 건수
      */
-    int deliveryRequest(List<DeliveryRequest> requestList);
+    String deliveryRequest(List<DeliveryRequest> requestList);
+
+	List<DeliveryRequest> selectPaymentList();
 
 }

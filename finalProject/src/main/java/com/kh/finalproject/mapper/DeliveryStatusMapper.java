@@ -1,24 +1,29 @@
 package com.kh.finalproject.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
+
 import com.kh.finalproject.dto.DeliveryStatus;
 
 @Mapper
 public interface DeliveryStatusMapper {
 
-    // 운송장 번호로 검색 (단건 조회)
+    // 기존 메서드들...
     DeliveryStatus selectDeliveryByPostNo(String postNo);
-    
-    // 전체 배송 요청 건수
     int selectTotalCount();
-    
-    // 상태별 건수 조회 (접수대기, 배송중, 배송완료 등)
     int selectCountByStatus(String status);
-    
-    // 상태별 목록 조회 (필터링 기능)
+    List<DeliveryStatus> selectAllList();
     List<DeliveryStatus> selectListByStatus(String status);
 
-    // 전체 목록 조회
-    List<DeliveryStatus> selectAllList();
+    // ▼▼▼ [새로 추가해야 할 메서드 2개] ▼▼▼
+    
+    // 1. 전체 게시글 수 조회 (검색 조건 포함)
+    int getListCount(Map<String, Object> paramMap);
+
+    // 2. 목록 조회 (검색 조건 + 페이지네이션 포함)
+    // RowBounds는 MyBatis가 알아서 처리하므로 XML에는 파라미터로 안 써도 됨
+    List<DeliveryStatus> selectDeliveryList(Map<String, Object> paramMap);
 }

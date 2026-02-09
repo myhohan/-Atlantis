@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>택배 접수 - LogiSystem</title>
+    <title>택배 접수 및 결제 - LogiSystem</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <div class="max-w-4xl mx-auto px-4 py-8">
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">택배 접수</h1>
-            <p class="text-gray-600">택배 정보를 입력하여 접수를 진행하세요</p>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">택배 접수 & 결제</h1>
+            <p class="text-gray-600">정보를 입력하고 결제를 완료하면 운송장이 자동 발급됩니다.</p>
         </div>
 
         <form id="registerForm" class="space-y-8">
+            
             <div class="bg-white rounded-lg shadow-sm p-6">
                 <div class="flex items-center mb-6">
                     <i data-lucide="user" class="w-5 h-5 text-blue-600 mr-2"></i>
@@ -23,19 +27,19 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">이름</label>
-                        <input type="text" name="senderName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <input type="text" name="senderName" value="김발송" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">전화번호</label>
-                        <input type="tel" name="senderPhone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <input type="tel" name="senderPhone" value="010-1111-2222" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">이메일</label>
-                        <input type="email" name="senderEmail" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">이메일 (결제 알림용)</label>
+                        <input type="email" name="senderEmail" value="test@test.com" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
-                    <div>
+                    <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">주소</label>
-                        <input type="text" name="senderAddress" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <input type="text" name="senderAddress" value="서울시 강남구 테헤란로" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                 </div>
             </div>
@@ -48,15 +52,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">이름</label>
-                        <input type="text" name="receiverName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <input type="text" name="recipientName" value="이수령" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">전화번호</label>
-                        <input type="tel" name="receiverPhone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <input type="tel" name="recipientPhone" value="010-3333-4444" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">배송 주소</label>
-                        <input type="text" name="receiverAddress" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <input type="text" name="recipientAddress" value="부산시 해운대구" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                 </div>
             </div>
@@ -69,39 +73,102 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">택배 유형</label>
-                        <select name="parcelType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                            <option value="standard">일반 택배</option>
-                            <option value="express">익일 배송</option>
-                            <option value="same-day">당일 배송</option>
-                            <option value="fragile">깨지기 쉬운 물품</option>
+                        <select name="postType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option value="일반 택배">일반 택배 (3,000원)</option>
+                            <option value="특급 배송">특급 배송 (5,000원)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">무게 (kg)</label>
-                        <input type="number" name="weight" step="0.1" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <input type="number" name="postWeight" value="5" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">상품 설명</label>
-                        <textarea name="description" rows="4" placeholder="택배 물품에 대한 간단한 설명을 입력하세요" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">내용물 설명</label>
+                        <textarea name="postExplanation" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">서적 및 의류</textarea>
                     </div>
                 </div>
             </div>
 
             <div class="flex justify-end space-x-4">
-                <button type="button" class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">취소</button>
-                <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">접수하기</button>
+                <button type="button" onclick="history.back()" class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">취소</button>
+                <button type="submit" class="px-6 py-3 bg-yellow-400 text-black font-bold rounded-lg hover:bg-yellow-500 transition-colors shadow-md flex items-center">
+                    <i data-lucide="credit-card" class="w-5 h-5 mr-2"></i>
+                    카카오페이로 결제 및 접수하기
+                </button>
             </div>
         </form>
     </div>
 
     <script>
         lucide.createIcons();
+
+        // ▼▼▼ [중요] 포트원 초기화 (본인 식별코드로 꼭 변경하세요!) ▼▼▼
+        var IMP = window.IMP;
+        IMP.init("imp80458277"); // 예: imp12345678
+
         document.getElementById('registerForm').addEventListener('submit', (e) => {
-            e.preventDefault();
+            e.preventDefault(); // 폼 자동제출 방지
+            
+            // 폼 데이터 수집
             const formData = new FormData(e.target);
-            console.log(Object.fromEntries(formData));
-            alert('택배가 성공적으로 접수되었습니다!');
+            const data = Object.fromEntries(formData);
+
+            // 결제 함수 호출
+            requestPayment(data);
         });
+
+        function requestPayment(data) {
+            
+            // 주문번호 생성 (고유값)
+            const merchantUid = "ORD-" + new Date().getTime();
+
+            IMP.request_pay({
+                // ★ [핵심] 카카오페이 테스트 전용 코드 (에러 방지용)
+                pg: "kakaopay.TC0ONETIME", 
+                pay_method: "card",
+                merchant_uid: merchantUid,
+                name: "택배비 결제 (" + data.postType + ")",
+                amount: 3000, // 결제 금액 (테스트라 실제 청구 안됨)
+                buyer_email: data.senderEmail,
+                buyer_name: data.senderName,
+                buyer_tel: data.senderPhone
+            }, function (rsp) { // 결제 후 콜백
+                
+                if (rsp.success) {
+                    // 1. [성공]
+                    console.log("결제 성공! 봇을 호출합니다.");
+                    alert("결제가 완료되었습니다! \n택배사 전산으로 예약 중입니다. (약 3초 소요)");
+
+                    // 2. 서버로 데이터 전송 (이때 봇이 돌아감)
+                    sendToServer(data);
+
+                } else {
+                    // 3. [실패]
+                    alert("결제에 실패하였습니다. \n사유: " + rsp.error_msg);
+                }
+            });
+        }
+
+        function sendToServer(data) {
+            fetch("/deliveryrequest/request", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify([ data ]) // Controller가 List로 받으므로 배열로 감쌈
+            })
+            .then(resp => resp.text()) // 서버가 보낸 메시지(송장번호) 받기
+            .then(result => {
+                // 4. 최종 결과 출력 (PAID-HANJIN... 송장번호 뜸)
+                alert(result);
+                
+                if(result.includes("완료") || result.includes("성공")) {
+                    location.href = "/deliverystatus/list";
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("서버 연결 중 오류가 발생했습니다.");
+            });
+        }
     </script>
 </body>
 </html>

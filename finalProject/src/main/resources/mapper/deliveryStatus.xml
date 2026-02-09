@@ -1,50 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kh.finalproject.mapper.DeliveryStatusMapper">
 
-    <select id="selectDeliveryByPostNo" parameterType="string" resultType="com.kh.finalproject.dto.DeliveryStatus">
-        SELECT 
-            POST_NO AS postNo,
-            SENDER_NAME AS senderName,
-            RECEPIENT_NAME AS recipientName,
-            TRANSPORT_STATUS AS transportStatus,
-            CURRENT_LOCATION AS currentLocation,
-            UPDATE_DATE AS updateDate
-        FROM POSTAL_ITEM
-        WHERE POST_NO = #{postNo}
-    </select>
+    <sql id="searchCondition">
+        <if test="status != null and status != '' and status != 'all'">
+            AND TRANSPORT_STATUS = #{status}
+        </if>
+        
+        <if test="query != null and query != ''">
+            AND (
+                POST_NO LIKE '%' || #{query} || '%'
+                OR SENDER_NAME LIKE '%' || #{query} || '%'
+                OR RECEPIENT_NAME LIKE '%' || #{query} || '%'
+            )
+        </if>
+    </sql>
 
-    <select id="selectTotalCount" resultType="_int">
-        SELECT COUNT(*)
+    <select id="getListCount" resultType="_int">
+        SELECT COUNT(*) 
         FROM POSTAL_ITEM
-    </select>
+        WHERE MEMBER_DEL_FL = 'N'
+        <include refid="searchCondition"/> </select>
 
-    <select id="selectCountByStatus" parameterType="string" resultType="_int">
-        SELECT COUNT(*)
-        FROM POSTAL_ITEM
-        WHERE TRANSPORT_STATUS = #{status}
-    </select>
+  <select id="selectDeliveryList" resultType="com.kh.finalproject.dto.DeliveryStatus">
+    SELECT 
+        POST_NO,
+        SENDER_NAME,
+        RECEPIENT_NAME,
+        RECEPIENT_ADDRESS, 
+        TRANSPORT_STATUS,
+        TO_CHAR(REG_DATE, 'YYYY-MM-DD') AS REG_DATE 
+    FROM POSTAL_ITEM
+    WHERE MEMBER_DEL_FL = 'N'
+    <include refid="searchCondition"/> 
+    ORDER BY REG_DATE DESC
+    
+    OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+</select>
 
-    <select id="selectListByStatus" parameterType="string" resultType="com.kh.finalproject.dto.DeliveryStatus">
-        SELECT 
-            POST_NO AS postNo,
-            SENDER_NAME AS senderName,
-            RECEPIENT_NAME AS recipientName,
-            TRANSPORT_STATUS AS transportStatus
-        FROM POSTAL_ITEM
-        WHERE TRANSPORT_STATUS = #{status}
-        ORDER BY UPDATE_DATE DESC
-    </select>
-
-    <select id="selectAllList" resultType="com.kh.finalproject.dto.DeliveryStatus">
-        SELECT 
-            POST_NO AS postNo,
-            SENDER_NAME AS senderName,
-            RECEPIENT_NAME AS recipientName,
-            TRANSPORT_STATUS AS transportStatus
-        FROM POSTAL_ITEM
-        ORDER BY UPDATE_DATE DESC
-    </select>
-
-</mapper>
+    </mapper>

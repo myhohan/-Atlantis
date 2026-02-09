@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.kh.finalproject.dto.DeliveryRequest;
 import com.kh.finalproject.dto.Member;
+import com.kh.finalproject.dto.Mypage;
 import com.kh.finalproject.dto.UploadFile;
 
 @Mapper
@@ -52,5 +54,14 @@ public interface MyPageMapper {
 	 */
 	int profile(Member member);
 	
+	/** 로그인한 회원 정보 조회 (마이페이지 메인용)
+     * @param memberNo
+     * @return
+     */
+    Mypage selectProfile(int memberNo);
+
+	List<DeliveryRequest> selectMyParcelList(int memberNo);
+
+	List<DeliveryRequest> selectMyPaymentList(int memberNo);
 	
 }

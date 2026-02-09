@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경로 확인 - LogiSystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">택배 경로 확인</h1>
+            <p class="text-gray-600">송장번호로 실시간 배송 상태를 추적하세요</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+            <form id="trackingForm" class="max-w-2xl mx-auto">
+                <label class="block text-sm font-medium text-gray-700 mb-3">송장번호 입력</label>
+                <div class="flex gap-3">
+                    <div class="flex-1 relative">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                        <input type="text" id="trackingNumber" placeholder="송장번호 (예: PKG-2024-001)" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <button type="submit" class="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">조회</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="resultArea" class="hidden">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-1" id="resultTitle">송장번호: PKG-2024-001</h2>
+                        <p class="text-sm text-gray-600">발송인: 김철수 → 수령인: 이영희</p>
+                    </div>
+                    <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                        <i data-lucide="check-circle" class="w-4 h-4 mr-1"></i> 배송완료
+                    </span>
+                </div>
+                <div class="relative">
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                    </div>
+                    <div class="flex justify-between mt-2 text-xs text-gray-600">
+                        <span>집하완료</span><span>입고완료</span><span>배송중</span><span>배송완료</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold mb-6 flex items-center">
+                    <i data-lucide="map-pin" class="w-5 h-5 mr-2 text-blue-600"></i> 배송 이력
+                </h3>
+                <div class="space-y-6" id="timelineList">
+                    </div>
+            </div>
+        </div>
+
+        <div id="emptyState" class="bg-gray-50 rounded-lg p-12 text-center">
+            <i data-lucide="map-pin" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">송장번호를 입력하세요</h3>
+            <p class="text-gray-600">송장번호를 입력하면 실시간으로 배송 상태를 확인할 수 있습니다</p>
+        </div>
+    </div>
+    <!-- 카카오 지도 API -->
+    <div id="map" style="width:500px;height:400px;">
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=발급받은 APP KEY를 넣으시면 됩니다.">
+
+            var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+            var options = { //지도를 생성할 때 필요한 기본 옵션
+	        center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+	        level: 3 //지도의 레벨(확대, 축소 정도)
+        };
+
+            var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+        </script>
+        
+    
+    </div>
+    <script>
+        lucide.createIcons();
+        const events = [
+            { time: '2024-01-13 14:30', location: '서울 강남 배송센터', status: '배송완료', description: '고객님께 상품이 전달되었습니다', icon: 'check-circle', color: 'text-green-600' },
+            { time: '2024-01-13 09:15', location: '서울 강남구', status: '배송중', description: '배송을 시작했습니다', icon: 'truck', color: 'text-blue-600' },
+            { time: '2024-01-12 15:20', location: '부산 물류센터', status: '집하완료', description: '상품을 수거했습니다', icon: 'package', color: 'text-yellow-600' }
+        ];
+
+        document.getElementById('trackingForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const val = document.getElementById('trackingNumber').value;
+            if(!val.trim()) return;
+
+            document.getElementById('resultArea').classList.remove('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('resultTitle').textContent = `송장번호: ${val}`;
+
+            const timeline = document.getElementById('timelineList');
+            timeline.innerHTML = events.map((ev, idx) => `
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-4">
+                        <i data-lucide="${ev.icon}" class="w-6 h-6 ${ev.color}"></i>
+                        ${idx !== events.length - 1 ? '<div class="w-0.5 h-16 bg-gray-300 mt-2"></div>' : ''}
+                    </div>
+                    <div class="flex-1 pb-8">
+                        <div class="flex items-center mb-1">
+                            <span class="font-semibold text-gray-900">${ev.status}</span>
+                            <span class="ml-3 text-sm text-gray-500">${ev.time}</span>
+                        </div>
+                        <div class="text-sm text-gray-600 mb-1">${ev.location}</div>
+                        <div class="text-sm text-gray-500">${ev.description}</div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

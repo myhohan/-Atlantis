@@ -47,8 +47,18 @@ dependencies {
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.5'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'org.seleniumhq.selenium:selenium-java:4.16.1'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// build.gradle 맨 아래에 추가
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources"]
+        }
+    }
 }

@@ -1,0 +1,41 @@
+package com.kh.finalproject.service;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.kh.finalproject.dto.Board;
+
+/* 게시글 작성 서비스 github 참고하여 완료
+ * 
+ */
+public interface EditBoardService {
+
+	
+	/** 게시글 작성 서비스
+	 * @param inputBoard
+	 * @param images
+	 * @return
+	 */
+	int boardInsert(Board inputBoard, List<MultipartFile> images)
+		throws IllegalStateException, IOException;
+	
+	/** 게시글 수정 서비스
+	 * @param inputBoard
+	 * @param images
+	 * @param deleteOrderList
+	 * @return
+	 */
+	int boardUpdate(Board inputBoard, List<MultipartFile> images, String deleteOrderList)
+	throws Exception;
+	
+	/** 게시글 삭제
+	 * @param map
+	 * @return
+	 */
+	int boardDelete(Map<String, Integer>map);
+	
+	
+}

@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.finalproject.dto.DeliveryRequest;
 import com.kh.finalproject.dto.Member;
+import com.kh.finalproject.dto.Mypage;
 import com.kh.finalproject.dto.UploadFile;
 
 
@@ -70,4 +72,10 @@ public interface MyPageProfileService {
 	 * @return
 	 */
 	int profile(MultipartFile profileImg, Member loginMember) throws Exception;
+
+	Mypage selectProfile(int memberNo);
+
+	List<DeliveryRequest> selectMyParcelList(int memberNo);
+
+	List<DeliveryRequest> selectMyPaymentList(int memberNo);
 }

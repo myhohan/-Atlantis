@@ -16,7 +16,8 @@ public class PaymentManagement {
     private int totalPayment;        // 총 결제 금액
     private int totalPendingPayment; // 결제 대기 금액
     private int totalCompletePayment;// 결제 완료 금액
-    
+    private int payment; // 배송 결제금액
+    private String paymentMethod; // 결제 수단
     
     private String paymentNo;        // 결제 번호
     private String paymentDate;      // 결제일

@@ -47,6 +47,11 @@ public interface MemberService {
 	 */
 	int restoreMember(int inputNo);
 
+	/** 회원번호 조회 
+	 * 로그인 기능
+	 * **/
+	Member selectMemberByNo(int memberNo);
+
 	
 	
 	

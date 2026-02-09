@@ -30,4 +30,13 @@ public class Mypage {
 	
 	private String memberNickname;
 	
+	
+	
+	
+    private String memberEmail;     // 이메일 (HTML ID: memberID 대응)
+      // 이름/닉네임 (HTML ID: memberName 대응)
+    private String memberTel;       // 전화번호 (HTML ID: memberPhone 대응)
+    private String memberAddress;   // 주소
+    private String enrollDate;      // 가입일
+    private String profileImg;      // 프로필 이미지 경로
 }

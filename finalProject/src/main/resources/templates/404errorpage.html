@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 페이지를 찾을 수 없음</title>
+    <style>
+        :root {
+            /* 배경색: 은은한 파란색 틴트 */
+            --bg-color: #dbeafe;
+            /* 카드색: 흰색 */
+            --card-bg: #ffffff;
+            /* 텍스트 및 에러 코드 색상: 검은색 계열로 통일 */
+            --text-black: #111827;
+            --text-gray: #6b7280;
+        }
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .error-container {
+            background: var(--card-bg);
+            padding: 3rem 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            text-align: center;
+            max-width: 480px;
+            width: 90%;
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.05em;
+            /* 색상 제거: 검은색으로 통일 */
+            color: var(--text-black);
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            /* 검은색 */
+            color: var(--text-black);
+            margin: 0 0 1rem 0;
+        }
+        p {
+            /* 회색 */
+            color: var(--text-gray);
+            margin: 0 0 2rem 0;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+        .btn-home {
+            display: inline-block;
+            /* 버튼도 검은색 유지 */
+            background-color: var(--text-black);
+            color: white;
+            text-decoration: none;
+            padding: 0.875rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .btn-home:hover {
+            /* 호버 시 약간 더 진한 검정 */
+            background-color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h1>페이지를 찾을 수 없습니다</h1>
+        <p>
+            요청하신 페이지가 제거되었거나,<br>
+            이름이 변경되었거나, 일시적으로 사용할 수 없습니다.<br>
+            주소를 다시 확인해 주세요.
+        </p>
+        <a href="/" class="btn-home">메인으로 돌아가기</a>
+    </div>
+</body>
+</html>

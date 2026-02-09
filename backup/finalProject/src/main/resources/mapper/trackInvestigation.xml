@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.finalproject.mapper.TrackingMapper">
+
+    <select id="selectTrackingInfo" parameterType="string" resultType="com.kh.finalproject.dto.Tracking">
+        SELECT 
+            POST_NO AS postNo,
+            SENDER_NAME AS senderName,
+            RECEPIENT_NAME AS recipientName,
+            TRANSPORT_STATUS AS currentStatus,
+            CURRENT_LOCATION AS currentLocation,
+            UPDATE_DATE AS updateTime
+        FROM POSTAL_ITEM
+        WHERE POST_NO = #{postNo}
+    </select>
+
+    <select id="selectTransportStatus" parameterType="string" resultType="string">
+        SELECT TRANSPORT_STATUS
+        FROM POSTAL_ITEM
+        WHERE POST_NO = #{postNo}
+    </select>
+
+</mapper>
+

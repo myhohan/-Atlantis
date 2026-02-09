@@ -1,112 +1,152 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>택배 관리 시스템</title>
+    <title>택배 관리 시스템 - 메인</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .dashboard-card { transition: all 0.3s ease; }
+        .dashboard-card:hover { transform: translateY(-5px); }
+    </style>
 </head>
-<body class="min-h-screen bg-gray-50">
+<body class="bg-gray-50 min-h-screen flex flex-col">
 
-    <nav class="bg-white border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4">
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <a href="index.html" class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                            <i data-lucide="package" class="text-white w-5 h-5"></i>
+                    <a th:href="@{/}" class="flex items-center gap-2">
+                        <div class="bg-blue-600 p-2 rounded-lg text-white">
+                            <i data-lucide="package" class="w-6 h-6"></i>
                         </div>
-                        <span class="text-xl font-bold text-gray-900">LogiSystem</span>
+                        <span class="text-xl font-bold text-gray-900">택배시스템</span>
                     </a>
                 </div>
+
                 <div class="flex items-center space-x-4">
-                    <a href="login.html" class="text-gray-600 hover:text-blue-600 font-medium">로그인</a>
-                    <a href="signup.html" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">회원가입</a>
+                    
+                    <th:block th:if="${session.loginMember == null}">
+                        <a th:href="@{/member/login}" class="text-gray-500 hover:text-blue-600 font-medium">로그인</a>
+                        <a th:href="@{/member/signup}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium transition">회원가입</a>
+                    </th:block>
+
+                    <th:block th:if="${session.loginMember != null}">
+                        <div class="flex items-center gap-2 text-gray-700">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                            <span class="font-bold">
+                                <span th:text="${session.loginMember.memberNickname}">사용자</span>님
+                            </span>
+                        </div>
+                        <a th:href="@{/member/logout}" class="text-sm text-gray-500 hover:text-red-600 border border-gray-300 px-3 py-1 rounded hover:bg-gray-50">로그아웃</a>
+                    </th:block>
+
                 </div>
             </div>
         </div>
     </nav>
 
-    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+
+    <div class="bg-blue-600 py-12 mb-10">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-5xl font-bold mb-6">빠르고 안전한 택배 관리</h1>
-            <p class="text-xl mb-8 text-blue-100">실시간 추적과 간편한 관리로 택배 업무를 효율적으로</p>
-            <div class="flex justify-center space-x-4">
-                <a href="register.html" class="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors">택배 접수하기</a>
-                <a href="tracking.html" class="px-8 py-3 bg-blue-700 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors">배송 조회</a>
-            </div>
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                빠르고 안전한 택배 관리 서비스
+            </h1>
+            <p class="text-blue-100 text-lg">
+                접수부터 배송 추적까지 한 번에 관리하세요.
+            </p>
         </div>
-    </section>
+    </div>
 
-    <section class="py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="stats-container">
-                </div>
-        </div>
-    </section>
 
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">주요 기능</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="features-container">
+    <main class="flex-grow max-w-7xl mx-auto px-4 w-full pb-20">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <a th:href="@{/register}" class="dashboard-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md cursor-pointer group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition">
+                        <i data-lucide="file-plus" class="w-8 h-8 text-blue-600"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">서비스</span>
                 </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-1">택배 접수</h3>
+                <p class="text-gray-500 text-sm">새로운 택배를 등록하고<br>운송장을 출력합니다.</p>
+            </a>
+
+            <a th:href="@{/tracking}" class="dashboard-card bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md cursor-pointer group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition">
+                        <i data-lucide="search" class="w-8 h-8 text-indigo-600"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">서비스</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-1">배송 조회</h3>
+                <p class="text-gray-500 text-sm">운송장 번호로<br>실시간 위치를 확인합니다.</p>
+            </a>
+
+
+            <th:block th:if="${session.loginMember != null}">
+
+                <a th:href="@{/mypage/info}" class="dashboard-card bg-white p-6 rounded-xl shadow-sm border-2 border-red-100 hover:border-red-300 hover:shadow-md cursor-pointer group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-red-500 text-white text-[10px] px-2 py-1 rounded-bl-lg font-bold">MY</div>
+                    
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-red-50 rounded-lg group-hover:bg-red-100 transition">
+                            <i data-lucide="user-cog" class="w-8 h-8 text-red-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">마이페이지</h3>
+                    <p class="text-gray-500 text-sm">내 정보를 수정하고<br>이력을 확인합니다.</p>
+                </a>
+
+                <a th:href="@{/status}" class="dashboard-card bg-white p-6 rounded-xl shadow-sm border-2 border-orange-100 hover:border-orange-300 hover:shadow-md cursor-pointer group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-orange-500 text-white text-[10px] px-2 py-1 rounded-bl-lg font-bold">ADMIN</div>
+
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-orange-50 rounded-lg group-hover:bg-orange-100 transition">
+                            <i data-lucide="truck" class="w-8 h-8 text-orange-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">배송 관리</h3>
+                    <p class="text-gray-500 text-sm">전체 배송 현황을 보고<br>상태를 변경합니다.</p>
+                </a>
+                
+                <a th:href="@{/payment}" class="dashboard-card bg-white p-6 rounded-xl shadow-sm border-2 border-green-100 hover:border-green-300 hover:shadow-md cursor-pointer group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-green-500 text-white text-[10px] px-2 py-1 rounded-bl-lg font-bold">ADMIN</div>
+
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-green-50 rounded-lg group-hover:bg-green-100 transition">
+                            <i data-lucide="credit-card" class="w-8 h-8 text-green-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">결제 관리</h3>
+                    <p class="text-gray-500 text-sm">결제 내역을 확인하고<br>상태를 변경합니다.</p>
+                </a>
+				
+				<a th:href="@{/lostandfound}" class="dashboard-card bg-white p-6 rounded-xl shadow-sm border-2 border-green-100 hover:border-green-300 hover:shadow-md cursor-pointer group relative overflow-hidden">
+				                    <div class="absolute top-0 right-0 bg-green-500 text-white text-[10px] px-2 py-1 rounded-bl-lg font-bold">ADMIN</div>
+
+				                    <div class="flex justify-between items-start mb-4">
+				                        <div class="p-3 bg-green-50 rounded-lg group-hover:bg-green-100 transition">
+				                            <i data-lucide="credit-card" class="w-8 h-8 text-green-600"></i>
+				                        </div>
+				                    </div>
+				                    <h3 class="text-lg font-bold text-gray-900 mb-1">분실 및 확인</h3>
+				                    <p class="text-gray-500 text-sm">분실 상태를 확인<br>소포의 최종 상태</p>
+				                </a>
+
+            </th:block> 
+
         </div>
-    </section>
+    </main>
 
     <script>
-        // 아이콘 초기화
-        lucide.createIcons();
-
-        // 데이터 정의
-        const stats = [
-            { label: '오늘 접수', value: '1,234', icon: 'package' },
-            { label: '배송중', value: '5,678', icon: 'truck' },
-            { label: '배송완료', value: '12,345', icon: 'shield' },
-            { label: '평균 배송시간', value: '24시간', icon: 'clock' },
-        ];
-
-        const features = [
-            { icon: 'file-text', title: '택배 접수', description: '간편한 택배 접수 시스템', link: 'register.html', color: 'bg-blue-500' },
-            { icon: 'package', title: '접수 현황', description: '실시간 택배 접수 현황 확인', link: 'status.html', color: 'bg-green-500' },
-            { icon: 'credit-card', title: '결제 관리', description: '택배 요금 및 결제 내역', link: 'payment.html', color: 'bg-purple-500' },
-            { icon: 'map-pin', title: '경로 확인', description: '택배 배송 경로 추적', link: 'tracking.html', color: 'bg-orange-500' },
-            { icon: 'alert-circle', title: '분실 추적', description: '분실 택배 신고 및 추적', link: 'loss.html', color: 'bg-red-500' },
-            { icon: 'building-2', title: '회사 관리', description: '관리자 전용 대시보드', link: 'company-management.html', color: 'bg-gray-800' },
-        ];
-
-        // Stats 렌더링
-        const statsContainer = document.getElementById('stats-container');
-        stats.forEach(stat => {
-            const div = document.createElement('div');
-            div.className = 'bg-gray-50 rounded-lg p-6 text-center';
-            div.innerHTML = `
-                <i data-lucide="${stat.icon}" class="w-8 h-8 mx-auto mb-3 text-blue-600"></i>
-                <div class="text-3xl font-bold text-gray-900 mb-1">${stat.value}</div>
-                <div class="text-sm text-gray-600">${stat.label}</div>
-            `;
-            statsContainer.appendChild(div);
-        });
-
-        // Features 렌더링
-        const featuresContainer = document.getElementById('features-container');
-        features.forEach(feature => {
-            const a = document.createElement('a');
-            a.href = feature.link;
-            a.className = 'bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow block';
-            a.innerHTML = `
-                <div class="${feature.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                    <i data-lucide="${feature.icon}" class="w-6 h-6 text-white"></i>
-                </div>
-                <h3 class="text-xl font-semibold mb-2">${feature.title}</h3>
-                <p class="text-gray-600">${feature.description}</p>
-            `;
-            featuresContainer.appendChild(a);
-        });
-
-        // 동적으로 추가된 아이콘 다시 초기화
         lucide.createIcons();
     </script>
+
 </body>
 </html>

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DeliveryRequest {
     
-    private int postNo;             // 운송장 번호 (PK, 시퀀스로 자동생성 예상)
+    private String postNo;             // 운송장 번호 (PK, 시퀀스로 자동생성 예상)
     
     // 보내는 사람 정보
     private String senderName;
@@ -26,7 +26,10 @@ public class DeliveryRequest {
     
     // 물품 정보
     private String postType;        // 물품 종류
-    private String postWeight;      // 무게
+    private int postWeight;      // 무게
     private String postExplanation; // 물품 설명 (요청사항)
+    private String regDate;
+    private String isPayment;
+    private String transportStatus;
 }
 

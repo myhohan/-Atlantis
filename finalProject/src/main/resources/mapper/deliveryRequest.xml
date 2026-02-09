@@ -1,39 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.kh.finalproject.mapper.DeliveryRequestMapper">
 
     <insert id="insertDeliveryRequest" parameterType="com.kh.finalproject.dto.DeliveryRequest">
+        <selectKey keyProperty="postNo" resultType="String" order="BEFORE">
+            SELECT TO_CHAR(SEQ_POST_NO.NEXTVAL) FROM DUAL
+        </selectKey>
+
         INSERT INTO POSTAL_ITEM (
             POST_NO,
-            SENDER_NAME,
-            SENDER_PHONE,
-            SENDER_EMAIL,
-            SENDER_ADDRESS,
-            RECEPIENT_NAME,
-            RECEPIENT_PHONE,
-            RECEPIENT_ADDRESS,
-            POST_TYPE,
-            POST_WEIGHT,
-            POST_EXPLANATION,
-            AUTHORITY,
-            MEMBER_DEL_FL
+            SENDER_NAME, SENDER_PHONE, SENDER_EMAIL, SENDER_ADDRESS,
+            RECEPIENT_NAME, RECEPIENT_PHONE, RECEPIENT_ADDRESS,
+            POST_TYPE, POST_WEIGHT, POST_EXPLANATION,
+            TRANSPORT_STATUS, REG_DATE, MEMBER_DEL_FL,
+            IS_PAYMENT
         ) VALUES (
-            SEQ_POST_NO.NEXTVAL,
-            #{senderName},
-            #{senderPhone},
-            #{senderEmail},
-            #{senderAddress},
-            #{recipientName},
-            #{recipientPhone},
-            #{recipientAddress},
-            #{postType},
-            #{postWeight},
-            #{postExplanation},
-            2,
-            'N'
-        )
+            #{postNo},
+            #{senderName}, #{senderPhone}, #{senderEmail}, #{senderAddress},
+            #{recipientName}, #{recipientPhone}, #{recipientAddress},
+            #{postType}, #{postWeight}, #{postExplanation},
+            #{transportStatus}, SYSDATE, 
+            'N',
+            #{isPayment}        )
     </insert>
+    
+    
 
 </mapper>
-

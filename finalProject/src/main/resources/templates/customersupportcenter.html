@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<style>
+    /* 기본 스타일 초기화 */
+    body { font-family: 'Noto Sans KR', sans-serif; background-color: #f4f6f8; margin: 0; padding: 0; color: #333; }
+    .container { max-width: 1000px; margin: 50px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    h1 { color: #0056b3; border-bottom: 2px solid #0056b3; padding-bottom: 15px; margin-bottom: 30px; font-size: 28px; }
+    h3 { margin-top: 30px; color: #444; }
+    p, li { line-height: 1.6; color: #666; font-size: 14px; }
+    
+    /* 약관 박스 스타일 */
+    .terms-box { border: 1px solid #ddd; background: #fafafa; padding: 20px; height: 400px; overflow-y: scroll; border-radius: 4px; margin-bottom: 20px; }
+    
+    /* 테이블 스타일 (개인정보) */
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+    th { background-color: #f0f4f8; color: #333; }
+    
+    /* 폼 스타일 (고객센터) */
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; font-weight: bold; }
+    input[type="text"], input[type="email"], textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+    button.btn-submit { background-color: #0056b3; color: white; border: none; padding: 15px 30px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
+    button.btn-submit:hover { background-color: #004494; }
+</style>
+
+
+
+
+    <meta charset="UTF-8">
+    <title>고객센터 - 파이널로지스틱스</title>
+    </head>
+<body>
+
+
+
+
+
+
+<div class="container">
+    <h1>고객센터</h1>
+    
+    <div style="margin-bottom: 50px;">
+        <h3>📌 자주 묻는 질문</h3>
+        <details style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+            <summary style="font-weight: bold;">배송 기간은 얼마나 걸리나요?</summary>
+            <p style="padding-left: 20px; color: #0056b3;">보통 주문 접수 후 1~3영업일 이내에 배송이 완료됩니다. 도서 산간 지역은 추가될 수 있습니다.</p>
+        </details>
+        <details style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+            <summary style="font-weight: bold;">운송장 번호 조회는 어디서 하나요?</summary>
+            <p style="padding-left: 20px; color: #0056b3;">상단 메뉴의 [배송 조회] 페이지에서 운송장 번호를 입력하시면 실시간 위치를 확인하실 수 있습니다.</p>
+        </details>
+        <details style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+            <summary style="font-weight: bold;">반품/교환은 어떻게 신청하나요?</summary>
+            <p style="padding-left: 20px; color: #0056b3;">[마이페이지] > [주문내역]에서 신청 가능하며, 물품 수령 후 7일 이내에 가능합니다.</p>
+        </details>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+
+    <h3>📝 1:1 문의하기</h3>
+    <form action="/cs/inquiry" method="post"> <div class="form-group">
+            <label for="type">문의 유형</label>
+            <select id="type" name="type">
+                <option value="delivery">배송 문의</option>
+                <option value="refund">반품/취소</option>
+                <option value="account">회원 정보</option>
+                <option value="etc">기타</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" placeholder="제목을 입력해주세요">
+        </div>
+
+        <div class="form-group">
+            <label for="orderNo">관련 운송장번호 (선택)</label>
+            <input type="text" id="orderNo" name="orderNo" placeholder="운송장 번호를 입력하면 빠른 처리가 가능합니다">
+        </div>
+
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" rows="5" placeholder="문의 내용을 상세히 적어주세요"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">문의 접수하기</button>
+    </form>
+</div>
+
+</body>
+</html>
+
+
+

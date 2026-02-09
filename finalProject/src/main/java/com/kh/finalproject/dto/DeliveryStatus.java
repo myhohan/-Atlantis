@@ -16,4 +16,13 @@ public class DeliveryStatus {
     private String transportStatus; // 배송 상태 (접수대기, 배송중, 배송완료)
     private String currentLocation; // 현재 위치
     private String updateDate;      // 최근 업데이트 시간
+    private String searchInput; // 검색어
+    private String recipientAddress; // 배송 주소표시
+    private String regDate;
+ // DeliveryStatus.java 예시
+  
+    
+
+
+
 }

@@ -13,24 +13,40 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor // Mapper 자동 주입
-@Transactional(rollbackFor = Exception.class) // 에러 발생 시 전체 롤백
+@RequiredArgsConstructor
+@Transactional // [중요] 예외 발생 시 자동 롤백, 성공 시 자동 커밋
 public class DeliveryRequestServiceImpl implements DeliveryRequestService {
 
     private final DeliveryRequestMapper mapper;
 
     @Override
-    public int deliveryRequest(List<DeliveryRequest> requestList) {
+    public String deliveryRequest(List<DeliveryRequest> requestList) { // 리턴타입 String으로 변경 추천
+        
+        StringBuilder sb = new StringBuilder();
         int successCount = 0;
         
-        // 리스트에 있는 모든 요청을 하나씩 Insert
         for (DeliveryRequest req : requestList) {
-            log.info("택배 접수 처리 중: 보내는 분 - {}", req.getSenderName());
-            
+            // DB에 저장 (이 순간 req.postNo에 번호가 채워짐 by selectKey)
             int result = mapper.insertDeliveryRequest(req);
-            successCount += result;
+            
+            if(result > 0) {
+                successCount++;
+                // 송장번호 수집 (콤마로 구분)
+                if(sb.length() > 0) sb.append(", ");
+                sb.append(req.getPostNo()); 
+            }
         }
         
-        return successCount; // 총 저장된 건수 반환
+        if(successCount > 0) {
+            return "접수 완료! 송장번호: [" + sb.toString() + "]";
+        } else {
+            return "접수 실패";
+        }
     }
+
+	@Override
+	public List<DeliveryRequest> selectPaymentList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

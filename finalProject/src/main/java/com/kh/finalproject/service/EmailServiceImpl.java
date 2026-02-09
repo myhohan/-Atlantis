@@ -1,13 +1,10 @@
 package com.kh.finalproject.service;
-import org.springframework.core.io.ClassPathResource;
 
-/* ClassPathsource
- * Context
- */
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -20,121 +17,120 @@ import com.kh.finalproject.mapper.EmailMapper;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.thymeleaf.context.Context;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class EmailServiceImpl implements EmailService{
-	
+public class EmailServiceImpl implements EmailService {
+
 	private final EmailMapper mapper;
 	private final JavaMailSender mailSender;
-	// JavaMailSender : 실제 메일 발송을 담당하는 객체(EmailConfig 참고)
 	private final SpringTemplateEngine templateEngine;
-	// SpringTemplateEngine : 타임리프를 이용해서 html 코드 -> java코드 변환
-	
+
+	/**
+	 * 1. 컨트롤러가 호출하는 메인 메서드
+	 * (기존에 비어있던 것을 수정함)
+	 */
+	@Override
+	public String sendEmail(String email) {
+		// "signup"은 templates/email/signup.html 템플릿을 쓰겠다는 뜻
+		return sendEmail("signup", email);
+	}
+
+	/**
+	 * 2. 실제 메일 발송 로직 (타입별 처리)
+	 */
 	@Override
 	public String sendEmail(String type, String email) {
-		
-		// 1. 인증키 생성 및 DB 저장
+
+		// 1) 인증키 생성
 		String authKey = createAuthKey();
-		
+		System.out.println("🔑 생성된 인증키: " + authKey);
+
 		Map<String, String> map = new HashMap<>();
 		map.put("authKey", authKey);
 		map.put("email", email);
-		
-		// DB 저장 시도 - 실패 시 해당 메서드 종료
-		if(!storeAuthKey(map)) return null;
-		
-		// 2. DB에 저장이 성공된 경우에 메일 발송 시도
-		MimeMessage mimeMessage = mailSender.createMimeMessage();
-		// 메일 발송 시 사용하는 객체
-		
+
+		// 2) DB 저장 시도
 		try {
-			// 메일 발송을 도와주는 Helper 클래스
-			// (파일첨부, 템플릿 설정 들 쉽게 처리)
-			MimeMessageHelper helper
-			= new MimeMessageHelper(mimeMessage, true, "UTF-8");
-			// - mimeMessage : MimeMessage 객체로, 
-						//	이메일 메시지의 내용을 담고있음
-						//  (이메일의 본문, 제목, 수신자 정보 등 포함)
-						// - true : 파일 첨부를 사용할 것인지 여부 지정
-						//  (파일첨부 및 내부 이미지 삽입 가능)
-						// - "UTF-8" : 이메일 내용이 UTF-8 인코딩으로 전송
-						
-						// 메일 기본 정보 셋팅
-						helper.setTo(email); // 받는 사람(수신자)
-						helper.setSubject("[boardProject] 회원 가입 인증번호입니다."); // 제목
-						helper.setText( loadHtml(authKey, type) , true );
-						// HTML 내용 설정
-						//helper.setText("인증번호 입니다 : " + authKey);
-						// 인증번호 입니다 : agdsey
-						
-						// 메일에 이미지 첨부(로고)
-						helper.addInline("logo", new ClassPathResource("static/images/logo.jpg"));
-						
-						// 실제 메일 발송
-						mailSender.send(mimeMessage);
-						
-						
-						return authKey;
-						
-					} catch (Exception e) {
-						e.printStackTrace();
-						return null; // 메일 발송 실패 시 null 반환
-					}
-				
-				}
-				
-				// HTML 템플릿에 데이터를 넣어 최종 HTML 생성
-				private String loadHtml(String authKey, String type) {
-					// Context(org.thymeleaf.context.Context)
-					// : 타임리프에서 제공하는 HTML 템플릿에 
-					// 데이터를 전달하기 위해 사용하는 클래스
-					Context context = new Context();
-					context.setVariable("authKey", authKey);
-					
-					return templateEngine.process("email/" + type, context);
-					// src/main/resources/templates/email/signup.html
-				}
+			if (!storeAuthKey(map)) {
+				System.out.println("❌ DB에 인증키 저장 실패 (이메일 없음 등)");
+				return null;
+			}
+		} catch (Exception e) {
+			System.out.println("❌ DB 저장 중 에러 발생!");
+			e.printStackTrace();
+			return null;
+		}
 
-				// 인증키와 이메일을 DB에 저장하는 메서드
-				@Transactional(rollbackFor = Exception.class) // 메서드 레벨에서도 이용 가능
-				public boolean storeAuthKey(Map<String, String> map) {
-					
-					// 1. 기존 이메일에 대한 인증키 update 수행
-					int result = mapper.updateAuthKey(map);
-					
-					// 2. update 실패 시 insert 수행
-					if(result == 0) {
-						result = mapper.insertAuthKey(map);
-					}
-					
-					// 3. 성공 여부 반환 (true / false)
-					return result > 0; 
-				}
-				
+		// 3) 메일 발송 준비
+		MimeMessage mimeMessage = mailSender.createMimeMessage();
 
-				// 인증번호 발급 메서드
-				// UUID를 사용하여 인증키 생성
-				// (Universally Unique IDentifier) : 
-				// 전세계에서 고유한 식별자를 생성하기 위한 표준 
-				// 매우 낮은 확률로 중복되는 식별자를 생성
-				// 주로 데이터베이스 기본키, 고유한 식별자를 생성해야 할 때 사용
-				private String createAuthKey() {
-					return UUID.randomUUID().toString().substring(0, 6);
-				}
-				
-				
-				@Override
-				public int checkAuthKey(Map<String, String> map) {
-					return mapper.checkAuthKey(map);
-				}
-				
-				
-				
+		try {
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+			helper.setTo(email);
+			helper.setSubject("[boardProject] 회원 가입 인증번호입니다.");
 			
+			// 템플릿 로딩 시도
+			String htmlContent = loadHtml(authKey, type);
+			helper.setText(htmlContent, true);
 
+			// 로고 이미지 첨부 (이미지가 없으면 에러 날 수 있음 -> 예외처리)
+			/*
+			try {
+				helper.addInline("logo", new ClassPathResource("static/images/logo.jpg"));
+			} catch (Exception e) {
+				System.out.println("⚠️ 로고 이미지 첨부 실패 (파일 없음 - 발송은 계속 진행)");
+			}
+			 */
+			// 4) ★★★ 실제 메일 전송 ★★★
+			System.out.println("🚀 메일 서버로 전송 시도: " + email);
+			mailSender.send(mimeMessage);
+			System.out.println("✅ 메일 전송 성공!");
 
-		};
+			return authKey;
 
+		} catch (Exception e) {
+			// ★ 요청하신 에러 출력 코드 ★
+			System.out.println("❌❌❌ 메일 발송 중 치명적 오류 발생! ❌❌❌");
+			System.out.println("에러 내용: " + e.getMessage());
+			e.printStackTrace(); // 콘솔에 에러 상세 내용 출력
+			return null;
+		}
+	}
+
+	// HTML 템플릿 로딩
+	private String loadHtml(String authKey, String type) {
+		Context context = new Context();
+		context.setVariable("authKey", authKey);
+		return templateEngine.process("email/" + type, context);
+	}
+
+	// 인증키 DB 저장 (특수문자 제거 및 정리 완료)
+	@Transactional(rollbackFor = Exception.class)
+	public boolean storeAuthKey(Map<String, String> map) {
+		int result = mapper.updateAuthKey(map.get("email"), map.get("authKey"));
+		if (result == 0) {
+			result = mapper.insertAuthKey(map);
+		}
+		return result > 0;
+	}
+
+	// 인증키 생성
+	private String createAuthKey() {
+		return UUID.randomUUID().toString().substring(0, 6);
+	}
+
+	// 인증키 확인
+	@Override
+	public int checkAuthKey(Map<String, String> map) {
+		return mapper.checkAuthKey(map);
+	}
+
+	// 사용하지 않는 메서드 (인터페이스 규격 맞춤용)
+	@Override
+	public String sendEmail(String email, String subject, String body) {
+		return null;
+	}
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <style>
+    /* 기본 스타일 초기화 */
+    body { font-family: 'Noto Sans KR', sans-serif; background-color: #f4f6f8; margin: 0; padding: 0; color: #333; }
+    .container { max-width: 1000px; margin: 50px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    h1 { color: #0056b3; border-bottom: 2px solid #0056b3; padding-bottom: 15px; margin-bottom: 30px; font-size: 28px; }
+    h3 { margin-top: 30px; color: #444; }
+    p, li { line-height: 1.6; color: #666; font-size: 14px; }
+    
+    /* 약관 박스 스타일 */
+    .terms-box { border: 1px solid #ddd; background: #fafafa; padding: 20px; height: 400px; overflow-y: scroll; border-radius: 4px; margin-bottom: 20px; }
+    
+    /* 테이블 스타일 (개인정보) */
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+    th { background-color: #f0f4f8; color: #333; }
+    
+    /* 폼 스타일 (고객센터) */
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; font-weight: bold; }
+    input[type="text"], input[type="email"], textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+    button.btn-submit { background-color: #0056b3; color: white; border: none; padding: 15px 30px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
+    button.btn-submit:hover { background-color: #004494; }
+</style>
+
+
+    <meta charset="UTF-8">
+    <title>이용약관 - 파이널로지스틱스</title>
+    </head>
+<body>
+
+<div class="container">
+    <h1>서비스 이용약관</h1>
+    
+    <div class="terms-box">
+        <h3>제1조 (목적)</h3>
+        <p>본 약관은 파이널로지스틱스(이하 "회사")가 제공하는 물류 및 배송 서비스(이하 "서비스")의 이용조건 및 절차, 회사와 회원의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+
+        <h3>제2조 (용어의 정의)</h3>
+        <p>1. "배송대행"이라 함은 회원이 신청한 물품을 회사가 지정한 물류센터 입고부터 배송지까지 운송하는 업무를 말합니다.<br>
+           2. "운송장"이라 함은 화물의 배송 경로를 추적하기 위해 부여된 고유 번호를 말합니다.</p>
+
+        <h3>제3조 (회사의 의무)</h3>
+        <p>회사는 특별한 사정이 없는 한 회원이 신청한 배송 업무를 신속하고 안전하게 처리할 의무가 있습니다.</p>
+
+        <h3>제4조 (배송 불가 물품)</h3>
+        <p>다음 각 호에 해당하는 물품은 배송이 제한될 수 있습니다.<br>
+           1. 폭발물, 인화성 물질 등 위험물<br>
+           2. 현금, 유가증권, 귀금속 등 고가품<br>
+           3. 법령에 의해 수출입이 금지된 물품</p>
+
+        <h3>제5조 (손해배상)</h3>
+        <p>회사의 귀책사유로 인하여 물품이 파손되거나 분실된 경우, 회사는 운송 약관 및 관련 법령에 따라 배상합니다.</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <input type="checkbox" id="agree"> <label for="agree" style="display:inline;">위 약관에 동의합니다.</label>
+        <br><br>
+        <button class="btn-submit" onclick="location.href='/'">메인으로 돌아가기</button>
+    </div>
+</div>
+
+
+
+
+
