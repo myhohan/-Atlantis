@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사업자 정보 - LogiSystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl mb-4">
+                <i data-lucide="building-2" class="w-8 h-8"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900">사업자 정보</h1>
+            <p class="text-gray-500 mt-2">LogiSystem은 투명하고 안전한 물류 서비스를 약속합니다.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                
+                <div class="p-8 border-b md:border-b-0 md:border-r border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <i data-lucide="info" class="w-5 h-5 text-blue-500"></i>
+                        기업 기본 정보
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wider font-semibold">상호명</label>
+                            <p class="text-gray-900 font-medium">주식회사 로지시스템 (LogiSystem Co., Ltd.)</p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wider font-semibold">대표자</label>
+                            <p class="text-gray-900 font-medium">한명호</p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wider font-semibold">사업자 등록번호</label>
+                            <p class="text-gray-900 font-medium">123-45-67890</p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 uppercase tracking-wider font-semibold">통신판매업 신고번호</label>
+                            <p class="text-gray-900 font-medium">제 2026-서울강남-0123호</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-8 bg-gray-50/50">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-blue-500"></i>
+                        고객지원 및 소재지
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 bg-white p-2 rounded-lg shadow-sm">
+                                <i data-lucide="phone" class="w-4 h-4 text-gray-600"></i>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 font-semibold">고객센터</label>
+                                <p class="text-gray-900 font-medium">1588-1234</p>
+                                <p class="text-xs text-gray-500 italic">평일 09:00 ~ 18:00 (주말/공휴일 휴무)</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 bg-white p-2 rounded-lg shadow-sm">
+                                <i data-lucide="mail" class="w-4 h-4 text-gray-600"></i>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 font-semibold">이메일</label>
+                                <p class="text-gray-900 font-medium underline">support@logisystem.co.kr</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 bg-white p-2 rounded-lg shadow-sm">
+                                <i data-lucide="map" class="w-4 h-4 text-gray-600"></i>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 font-semibold">사업장 소재지</label>
+                                <p class="text-gray-900 font-medium text-sm leading-relaxed">
+                                    서울특별시 강남구 테헤란로 123<br>
+                                    KH정보교육원 빌딩 5층
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 flex flex-col items-center gap-6">
+            <div class="flex gap-4">
+                <a href="/" class="group flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all shadow-md">
+                    <i data-lucide="home" class="w-4 h-4"></i>
+                    <span class="font-semibold text-sm">메인으로</span>
+                </a>
+                <button onclick="window.print()" class="flex items-center gap-2 px-6 py-2.5 bg-white border border-gray-300 rounded-full text-gray-700 hover:bg-gray-50 transition-all shadow-sm">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span class="font-semibold text-sm">페이지 인쇄</span>
+                </button>
+            </div>
+            
+            <p class="text-xs text-gray-400">Copyright © 2026 LogiSystem. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // 아이콘 활성화
+        lucide.createIcons();
+    </script>
+</body>
+</html>

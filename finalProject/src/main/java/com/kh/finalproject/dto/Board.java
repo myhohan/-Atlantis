@@ -29,7 +29,8 @@ public class Board {
 	private String boardDelFl;
 	private int boardCode;
 	private int memberNo;
-	
+      // 게시판 이름 (JOIN 해서 가져옴)
+    
 	// Member 테이블 조인
 	private String memberNickname;
 	

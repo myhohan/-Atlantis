@@ -26,7 +26,9 @@ public class AdminServiceImpl implements AdminService{
 		Member loginMember = mapper.login(inputMember.getMemberEmail());
 		
 		if(loginMember == null) return null;
-		
+		// [★추가] DB에서 비밀번호를 진짜 잘 가져왔는지 확인하는 코드
+	    System.out.println(">>> DB 암호: " + loginMember.getMemberPw());
+	    System.out.println(">>> 입력 암호: " + inputMember.getMemberPw());
 		if(!bcrypt.matches(inputMember.getMemberPw(), 
 							loginMember.getMemberPw())) return null;
 		

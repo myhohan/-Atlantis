@@ -1,5 +1,7 @@
 package com.kh.finalproject.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import com.kh.finalproject.dto.DeliveryLostandFound;
 
@@ -17,4 +19,11 @@ public interface DeliveryLostandfoundMapper {
     
     // 분실물 신고 등록 (성공 시 1 반환)
     int insertReport(DeliveryLostandFound dto);
-}
+    
+ // DeliveryLostandfoundMapper.java
+
+
+        // ★ 목록 조회 메서드 추가 (XML ID와 이름 일치 필수!)
+        List<DeliveryLostandFound> selectRecentReports();
+        
+    }

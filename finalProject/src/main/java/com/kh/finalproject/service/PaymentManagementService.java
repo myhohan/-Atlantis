@@ -10,4 +10,10 @@ public interface PaymentManagementService {
 
  
 	List<DeliveryRequest> selectPaymentList();
+
+	List<PaymentManagement> selectPaymentStats();
+
+	List<PaymentManagement> todayPaymentStats();
+
+	
 }

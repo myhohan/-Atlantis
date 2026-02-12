@@ -14,5 +14,33 @@
         WHERE IS_PAYMENT = 'Y'
         ORDER BY REG_DATE DESC
     </select>
+  <select id="selectPaymentStats" resultType="com.kh.finalproject.dto.PaymentManagement">
+    SELECT 
+        TO_CHAR(REG_DATE, 'YYYY-MM-DD') AS "paymentDate",
+        SUM(POST_PRICE) AS "amount", 
+        COUNT(*) AS "totalCompletePayment"
+    FROM POSTAL_ITEM
+    GROUP BY TO_CHAR(REG_DATE, 'YYYY-MM-DD')
+    ORDER BY "paymentDate" ASC
+</select>
 
+<select id="todayPaymentStats" resultType="com.kh.finalproject.dto.PaymentManagement">
+    SELECT 
+        TO_CHAR(REG_DATE, 'YYYY-MM-DD') AS "paymentDate",
+        SUM(POST_PRICE) AS "amount",                -- 오늘 총 매출
+        COUNT(*) AS "totalCompletePayment",         -- 오늘 총 접수 건수
+        SUM(CASE WHEN TRANSPORT_STATUS = '접수대기' THEN 1 ELSE 0 END) AS "totalPendingPayment" -- 오늘 대기 건수
+    FROM POSTAL_ITEM
+    WHERE TRUNC(REG_DATE) = TRUNC(SYSDATE) -- 👈 오늘 날짜만 필터링 (시분초 제외)
+    GROUP BY TO_CHAR(REG_DATE, 'YYYY-MM-DD')
+</select>
+	
 </mapper>
+
+
+
+
+
+
+
+

@@ -1,4 +1,3 @@
-
 import React, { useContext } from 'react';
 import '../css/DashBoard.css';
 import Restore from './Restore.jsx';
@@ -8,7 +7,9 @@ import Chart from './Chart.jsx';
 import { AuthContext } from './AuthContext.jsx';
 import { NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 import logo from "../assets/logo.jpg";
-
+import EntireApplicationofPayments from './EntireApplicationofPayments.jsx'
+import EntireApplicationofProducts from './EntireApplicationofProducts.jsx'
+import DeliveryStatus from './DeliveryStatus.jsx';
 // react-router-dom : React 애플리케이션에서 라우팅을 구현하기 위해 사용하는 라이브러리(설치필요)
 // 라우팅(Routing) : 사용자가 요청한 URL 경로에 따라 적절한 페이지나 자원을 제공하는 과정
 export default function DashBoard() {
@@ -44,15 +45,24 @@ export default function DashBoard() {
         <NavLink to="/restore">복구</NavLink>
         <NavLink to="/statistics">통계</NavLink>
         <NavLink to="/manager">관리자 메뉴</NavLink>
+
+        <NavLink to="/payments">결제 현황</NavLink>
+        <NavLink to="/products">제품 현황</NavLink>
+        <NavLink to="/deliverystatus">택배배송현황</NavLink>
       </div>
 
       {/* Route를 이용하여 각 URL에 맞는 컴포넌트를 연결 */}
       <Routes>
         <Route path='/' element={<Chart />} ></Route>
+        
         <Route path='/statistics' element={<Statistics />} ></Route>
         <Route path='/restore' element={<Restore />}></Route>
         <Route path='/manager' element={<Manager />}></Route>
-      </Routes>
+        <Route path='/payments' element={<EntireApplicationofPayments/>}></Route>
+        <Route path='/products' element={<EntireApplicationofProducts/>}></Route>
+        <Route path='/deliverystatus' element={<DeliveryStatus/>}></Route>
+</Routes>
+      
 
     </div>
   )

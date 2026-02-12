@@ -305,6 +305,12 @@ public class MyPageServiceImpl implements MyPageProfileService {
 	    public List<DeliveryRequest> selectMyPaymentList(int memberNo) {
 	        return mapper.selectMyPaymentList(memberNo);
 	    }
+
+		@Override
+		public int updateInfo(Member inputMember) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 		
 		
 		

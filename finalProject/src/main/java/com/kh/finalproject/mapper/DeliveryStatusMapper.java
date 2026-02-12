@@ -26,4 +26,6 @@ public interface DeliveryStatusMapper {
     // 2. 목록 조회 (검색 조건 + 페이지네이션 포함)
     // RowBounds는 MyBatis가 알아서 처리하므로 XML에는 파라미터로 안 써도 됨
     List<DeliveryStatus> selectDeliveryList(Map<String, Object> paramMap);
+
+    List<DeliveryStatus> getDeliveryStatusCounts();
 }

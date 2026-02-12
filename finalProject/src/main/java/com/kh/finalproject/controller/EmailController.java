@@ -17,25 +17,25 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("email")
-@RequiredArgsConstructor // final 필드에 자동으로 의존성 주입
+@RequiredArgsConstructor 
 public class EmailController {
 
 	@Autowired
 	private final EmailService service;
 	@ResponseBody
 	@PostMapping("/signup")
-	// 1. 파라미터를 Map<String, String>으로 바꿉니다.
+	
 	public String signup(@RequestBody Map<String, String> requestData) {
 	    
-	    // 2. 껍데기(Map) 안에서 "email" 키에 해당하는 알맹이만 꺼냅니다.
+	   
 	    String email = requestData.get("email"); 
 	    
-	    System.out.println("꺼낸 진짜 이메일: " + email); // 로그로 확인해보세요
+	    System.out.println("꺼낸 진짜 이메일: " + email); 
 
-	    // 3. 알맹이만 서비스로 넘깁니다.
+	   
 	    service.sendEmail(email); 
 	    
-	    return "success"; // 리턴값은 본인 코드에 맞게
+	    return "success"; 
 	}
 	
 	/** 입력받은 이메일, 인증번호가 DB에 있는지 조회
@@ -64,7 +64,7 @@ public class EmailController {
         // 3. 메일 발송
         service.sendEmail(email, subject, body);
         
-        // 4. (중요) 실제로는 여기서 authCode를 DB나 Redis에 저장해야 나중에 검증 가능
+      
         
         return "인증번호 발송 성공";
     }

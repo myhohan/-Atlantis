@@ -19,6 +19,7 @@ public class DeliveryStatus {
     private String searchInput; // 검색어
     private String recipientAddress; // 배송 주소표시
     private String regDate;
+    private int totalCount;
  // DeliveryStatus.java 예시
   
     

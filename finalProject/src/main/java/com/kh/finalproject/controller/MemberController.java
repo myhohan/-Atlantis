@@ -23,6 +23,10 @@ import com.kh.finalproject.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
 
+
+
+
+
 @Controller
 @RequestMapping("member") // 기본 주소: /member
 @Slf4j
@@ -31,17 +35,17 @@ public class MemberController {
     @Autowired
     private MemberService service;
 
-    // ==================================================================
-    // ▼▼▼ [1] 로그인 화면 보여주기 (GET) - 이게 있어야 화면이 뜹니다.
-    // ==================================================================
+    
+    // [1] 로그인 화면 보여주기 (GET)
+    
     @GetMapping("login")
     public String loginPage() {
         return "login"; // templates/login.html 파일을 보여줌
     }
 
-    // ==================================================================
-    // ▼▼▼ [2] 로그인 기능 처리하기 (POST) - 이게 있어야 로그인이 됩니다.
-    // ==================================================================
+    
+    // [2] 로그인 기능 처리하기 (POST)
+    
     @PostMapping("login")
     public String login(
             Member inputMember,
@@ -65,6 +69,7 @@ public class MemberController {
             if (saveId != null) cookie.setMaxAge(60 * 60 * 24 * 30);
             else cookie.setMaxAge(0);
             resp.addCookie(cookie);
+            
             
             return "redirect:/"; // 성공 시 메인으로
         }

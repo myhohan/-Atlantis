@@ -4,36 +4,42 @@
 <mapper namespace="com.kh.finalproject.mapper.DeliveryLostandfoundMapper">
 
     <select id="selectTotalReportCount" resultType="_int">
-        SELECT COUNT(*) 
-        FROM LOST_AND_FOUND
+        SELECT COUNT(*) FROM LOST_AND_FOUND
     </select>
 
     <select id="selectTotalInvestigationCount" parameterType="string" resultType="_int">
-        SELECT COUNT(*) 
-        FROM LOST_AND_FOUND
-        WHERE STATUS = #{status}
+        SELECT COUNT(*) FROM LOST_AND_FOUND WHERE STATUS = #{status}
     </select>
 
     <select id="selectTotalDiscoverCount" parameterType="string" resultType="_int">
-        SELECT COUNT(*) 
-        FROM LOST_AND_FOUND
-        WHERE DISCOVER_STATUS = #{status}
+        SELECT COUNT(*) FROM LOST_AND_FOUND WHERE DISCOVER_STATUS = #{status}
     </select>
 
-    <insert id="insertReport" parameterType="com.kh.finalproject.dto.DeliveryLostandFound">
-        INSERT INTO LOST_AND_FOUND (
-            POST_NO,
-            LOSS_TYPE,
-            REQUEST_EXPLANATION,
-            REPORT_DATE,
-            STATUS
-        ) VALUES (
-            #{postNo},
-            #{lossType},
-            #{requestExplanation},
-            SYSDATE,
-            #{status}
-        )
-    </insert>
+   <insert id="insertReport" parameterType="com.kh.finalproject.dto.DeliveryLostandFound">
+    INSERT INTO LOST_AND_FOUND (
+        REPORT_NO,          POST_NO,
+        LOSS_TYPE,
+        REQUEST_EXPLANATION,
+        REPORT_DATE,
+        STATUS
+    ) VALUES (
+        SEQ_REPORT_NO.NEXTVAL,  #{postNo},
+        #{lossType},
+        #{requestExplanation},
+        SYSDATE,
+        #{status}
+    )
+</insert>
+
+    <select id="selectRecentReports" resultType="com.kh.finalproject.dto.DeliveryLostandFound">
+        SELECT 
+            POST_NO AS postNo,
+            LOSS_TYPE AS lossType,
+            REPORT_DATE AS reportDate,
+            STATUS AS status,
+            REQUEST_EXPLANATION AS requestExplanation
+        FROM LOST_AND_FOUND
+        ORDER BY REPORT_DATE DESC
+    </select>
 
 </mapper>

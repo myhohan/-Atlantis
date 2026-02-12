@@ -1,5 +1,7 @@
 package com.kh.finalproject.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +52,12 @@ public class DeliveryLostandFoundServiceImpl implements DeliveryLostandFoundServ
         } else {
             return "신고 접수에 실패했습니다.";
         }
+    }
+
+    @Override
+    public List<DeliveryLostandFound> getRecentReports() {
+        // mapper 호출 결과가 null이면 에러가 날 수 있음
+        return mapper.selectRecentReports(); 
     }
 }
 /*

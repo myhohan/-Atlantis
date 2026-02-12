@@ -35,9 +35,9 @@ function AppComponent() {
               컴포넌트를 보여줄 수 있게 해주는 라우팅 컨테이너(라우팅이 적용될 부분의 최상위 부모 컴포넌트)
               -> Route, Link, NavLink, useNavigate() 등 같은 라우팅 관련 기능을 사용할 수 있다.
             */}
-            <BrowserRouter>
+           
               <DashBoard />
-            </BrowserRouter>
+           
           </div>
         )
       : (

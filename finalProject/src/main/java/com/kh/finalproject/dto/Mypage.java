@@ -32,7 +32,8 @@ public class Mypage {
 	
 	
 	
-	
+	private String memberAddressDetail;
+	private String memberPost;
     private String memberEmail;     // 이메일 (HTML ID: memberID 대응)
       // 이름/닉네임 (HTML ID: memberName 대응)
     private String memberTel;       // 전화번호 (HTML ID: memberPhone 대응)

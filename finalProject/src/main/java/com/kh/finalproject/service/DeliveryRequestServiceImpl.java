@@ -20,18 +20,18 @@ public class DeliveryRequestServiceImpl implements DeliveryRequestService {
     private final DeliveryRequestMapper mapper;
 
     @Override
-    public String deliveryRequest(List<DeliveryRequest> requestList) { // 리턴타입 String으로 변경 추천
+    public String deliveryRequest(List<DeliveryRequest> requestList) { 
         
         StringBuilder sb = new StringBuilder();
         int successCount = 0;
         
         for (DeliveryRequest req : requestList) {
-            // DB에 저장 (이 순간 req.postNo에 번호가 채워짐 by selectKey)
+            
             int result = mapper.insertDeliveryRequest(req);
             
             if(result > 0) {
                 successCount++;
-                // 송장번호 수집 (콤마로 구분)
+               
                 if(sb.length() > 0) sb.append(", ");
                 sb.append(req.getPostNo()); 
             }
@@ -46,7 +46,7 @@ public class DeliveryRequestServiceImpl implements DeliveryRequestService {
 
 	@Override
 	public List<DeliveryRequest> selectPaymentList() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 }

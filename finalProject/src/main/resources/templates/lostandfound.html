@@ -20,7 +20,6 @@
                         <span class="text-xl font-bold text-gray-900">택배시스템</span>
                     </a>
                 </div>
-                
                 <div class="flex items-center space-x-4">
                      <th:block th:if="${session.loginMember != null}">
                         <span class="text-gray-700 font-bold">
@@ -37,10 +36,13 @@
     </nav>
 
     <div class="max-w-7xl mx-auto px-4 py-8 flex-grow">
-        
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">분실 및 추적</h1>
             <p class="text-gray-600">분실된 택배를 신고하고 처리 현황을 확인하세요.</p>
+			<a href="/" class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+			        <i data-lucide="home" class="w-5 h-5"></i>
+			        <span class="font-medium">return</span>
+			    </a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -78,12 +80,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">송장번호</label>
-                        <input type="text" name="trackingNumber" placeholder="예: 1234567890" required 
+                        <input type="text" name="postNo" placeholder="예: 1234567890" required 
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">분실 유형</label>
-                        <select name="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <select name="lossType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                             <option value="lost">분실 (물건이 없어짐)</option>
                             <option value="damaged">파손 (물건이 망가짐)</option>
                             <option value="delay">배송 지연</option>
@@ -91,7 +93,7 @@
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-2">상세 설명</label>
-                        <textarea name="description" rows="5" placeholder="발생한 상황을 자세히 적어주세요." required 
+                        <textarea name="requestExplanation" rows="5" placeholder="발생한 상황을 자세히 적어주세요." required 
                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"></textarea>
                     </div>
                 </div>
@@ -120,7 +122,7 @@
                         <td class="px-6 py-10 text-center text-gray-500" colspan="4">
                             <div class="flex flex-col items-center">
                                 <i data-lucide="inbox" class="w-8 h-8 mb-2 text-gray-300"></i>
-                                아직 신고된 내역이 없습니다.
+                                데이터 로딩중...
                             </div>
                         </td>
                     </tr>
@@ -133,47 +135,115 @@
         // 아이콘 실행
         lucide.createIcons();
 
-        // 1. 통계 데이터 가져오기 (API 호출 예시)
-        fetch('/api/lostandfound/totalReport')
-            .then(res => res.json())
-            .then(data => { document.getElementById('stat-total').innerText = data; })
-            .catch(err => console.log('통계 로드 실패'));
+        // [기능 1] 통계 데이터 로드 함수
+        function loadStatistics() {
+            fetch('/api/lostandfound/totalReport')
+                .then(res => res.json())
+                .then(data => { document.getElementById('stat-total').innerText = data; })
+                .catch(() => document.getElementById('stat-total').innerText = '0');
 
-        fetch('/api/lostandfound/totalInvestigation')
-            .then(res => res.json())
-            .then(data => { document.getElementById('stat-investigation').innerText = data; })
-            .catch(err => console.log('통계 로드 실패'));
-            
-        fetch('/api/lostandfound/totalDiscover')
-            .then(res => res.json())
-            .then(data => { document.getElementById('stat-discover').innerText = data; })
-            .catch(err => console.log('통계 로드 실패'));
+            fetch('/api/lostandfound/totalInvestigation')
+                .then(res => res.json())
+                .then(data => { document.getElementById('stat-investigation').innerText = data; })
+                .catch(() => document.getElementById('stat-investigation').innerText = '0');
+                
+            fetch('/api/lostandfound/totalDiscover')
+                .then(res => res.json())
+                .then(data => { document.getElementById('stat-discover').innerText = data; })
+                .catch(() => document.getElementById('stat-discover').innerText = '0');
+        }
 
+        // [기능 2] 신고 내역 목록 로드 함수 (이게 있어야 테이블이 나옵니다!)
+        function loadRecentReports() {
+            fetch('/api/lostandfound/list') 
+                .then(response => response.json())
+                .then(list => {
+                    const tbody = document.getElementById('reportListBody');
+                    tbody.innerHTML = ''; 
 
-        // 2. 신고 접수 폼 처리
+                    if (list.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td class="px-6 py-10 text-center text-gray-500" colspan="4">
+                                    <div class="flex flex-col items-center">
+                                        <i data-lucide="inbox" class="w-8 h-8 mb-2 text-gray-300"></i>
+                                        신고된 내역이 없습니다.
+                                    </div>
+                                </td>
+                            </tr>`;
+                        lucide.createIcons();
+                        return;
+                    }
+
+                    list.forEach(item => {
+                        // 날짜 처리 (null 체크 포함)
+                        const date = item.reportDate ? new Date(item.reportDate).toLocaleDateString() : '-';
+                        
+                        // 분실 유형 한글 변환
+                        let typeText = item.lossType;
+                        if(item.lossType === 'lost') typeText = '분실';
+                        else if(item.lossType === 'damaged') typeText = '파손';
+                        else if(item.lossType === 'delay') typeText = '지연';
+
+                        // 상태 배지 색상
+                        let statusColor = 'bg-gray-100 text-gray-800'; // 기본
+                        if(item.status === '조사중') statusColor = 'bg-yellow-100 text-yellow-800';
+                        else if(item.status === '처리완료') statusColor = 'bg-green-100 text-green-800';
+
+                        const row = `
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">${item.postNo}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">${typeText}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">${date}</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusColor}">
+                                        ${item.status}
+                                    </span>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.insertAdjacentHTML('beforeend', row);
+                    });
+                })
+                .catch(err => console.error('목록 로드 실패:', err));
+        }
+
+        // [기능 3] 신고 접수 (HTML name을 바꿨으므로 JS가 간단해짐)
         document.getElementById('lossForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // 폼 데이터 가져오기
             const formData = new FormData(e.target);
+            // HTML name을 DTO와 똑같이 맞췄기 때문에 별도 매핑 불필요
             const data = Object.fromEntries(formData.entries());
+            
+            // 상태값 강제 주입
+            data.status = '조사중'; 
 
-            // 서버로 전송 (API Controller로 요청)
             fetch('/api/lostandfound/fileReport', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
-            .then(response => response.text())
+            .then(response => {
+                if(response.ok) return response.text();
+                throw new Error('서버 응답 오류');
+            })
             .then(result => {
-                alert('분실 신고가 접수되었습니다.');
-                e.target.reset(); // 폼 초기화
-                // 필요하다면 여기서 목록 새로고침 함수 호출
+                alert('신고가 정상적으로 접수되었습니다.');
+                e.target.reset(); 
+                loadStatistics();    // 통계 갱신
+                loadRecentReports(); // 목록 갱신
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('신고 접수 중 오류가 발생했습니다.');
+                alert('신고 접수 중 오류가 발생했습니다. (송장번호를 확인해주세요)');
             });
+        });
+
+        // 페이지 로드 시 실행
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStatistics();
+            loadRecentReports();
         });
     </script>
 </body>

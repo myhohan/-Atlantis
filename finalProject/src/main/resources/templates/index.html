@@ -142,8 +142,54 @@
             </th:block> 
 
         </div>
-    </main>
+		<footer class="max-w-7xl mx-auto px-4 py-12 mt-12 border-t border-gray-100">
+		    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+		        
+		        <a th:href="@{/personalinformationpolicy}" 
+		           class="group flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl hover:border-green-500 hover:shadow-md transition-all duration-300">
+		            <div class="flex items-center gap-3">
+		                <div class="p-2 bg-green-50 text-green-600 rounded-lg group-hover:bg-green-500 group-hover:text-white transition-colors">
+		                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+		                </div>
+		                <span class="font-semibold text-gray-700">개인정보처리방침</span>
+		            </div>
+		            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 group-hover:text-green-500 group-hover:translate-x-1 transition-all"></i>
+		        </a>
 
+		        <a th:href="@{/termsandagreement}" 
+		           class="group flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all duration-300">
+		            <div class="flex items-center gap-3">
+		                <div class="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-500 group-hover:text-white transition-colors">
+		                    <i data-lucide="file-text" class="w-5 h-5"></i>
+		                </div>
+		                <span class="font-semibold text-gray-700">이용약관</span>
+		            </div>
+		            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all"></i>
+		        </a>
+
+		        <a th:href="@{/business-info}" 
+		           class="group flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl hover:border-amber-500 hover:shadow-md transition-all duration-300">
+		            <div class="flex items-center gap-3">
+		                <div class="p-2 bg-amber-50 text-amber-600 rounded-lg group-hover:bg-amber-500 group-hover:text-white transition-colors">
+		                    <i data-lucide="building" class="w-5 h-5"></i>
+		                </div>
+		                <span class="font-semibold text-gray-700">사업자정보 확인</span>
+		            </div>
+		            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 group-hover:text-amber-500 group-hover:translate-x-1 transition-all"></i>
+		        </a>
+
+		    </div>
+		    
+		    <div class="flex flex-col md:flex-row justify-between items-center mt-10 pt-6 border-t border-gray-50 text-gray-400 text-sm">
+		        <p>© 2026 LogiSystem. All rights reserved.</p>
+		        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+		                class="mt-4 md:mt-0 flex items-center gap-2 hover:text-gray-900 transition-colors">
+		            맨 위로 이동 <i data-lucide="arrow-up-circle" class="w-5 h-5"></i>
+		        </button>
+		    </div>
+		</footer>
+		</main>
+		
     <script>
         lucide.createIcons();
     </script>

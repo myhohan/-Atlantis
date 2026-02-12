@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.finalproject.dto.DeliveryStatus;
+import com.kh.finalproject.dto.PaymentManagement;
 
 public interface DeliveryStatusService {
     
@@ -20,4 +21,9 @@ public interface DeliveryStatusService {
     List<DeliveryStatus> getDeliveryList(String status);
 
 	Map<String, Object> selectDeliveryList(Map<String, Object> paramMap, int cp);
+
+	
+	List<DeliveryStatus> getDeliveryStatusCounts();
+
+	
 }

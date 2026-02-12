@@ -8,34 +8,48 @@
         </if>
         
         <if test="query != null and query != ''">
+            <bind name="pattern" value="'%' + query.trim() + '%'" />
             AND (
-                POST_NO LIKE '%' || #{query} || '%'
-                OR SENDER_NAME LIKE '%' || #{query} || '%'
-                OR RECEPIENT_NAME LIKE '%' || #{query} || '%'
+                TO_CHAR(POST_NO) LIKE #{pattern}
+                OR SENDER_NAME LIKE #{pattern}
+                OR RECEPIENT_NAME LIKE #{pattern}
             )
         </if>
     </sql>
 
-    <select id="getListCount" resultType="_int">
+    <select id="getListCount" parameterType="map" resultType="_int">
         SELECT COUNT(*) 
         FROM POSTAL_ITEM
         WHERE MEMBER_DEL_FL = 'N'
-        <include refid="searchCondition"/> </select>
+        <include refid="searchCondition"/> 
+    </select>
 
-  <select id="selectDeliveryList" resultType="com.kh.finalproject.dto.DeliveryStatus">
-    SELECT 
-        POST_NO,
-        SENDER_NAME,
-        RECEPIENT_NAME,
-        RECEPIENT_ADDRESS, 
-        TRANSPORT_STATUS,
-        TO_CHAR(REG_DATE, 'YYYY-MM-DD') AS REG_DATE 
-    FROM POSTAL_ITEM
-    WHERE MEMBER_DEL_FL = 'N'
-    <include refid="searchCondition"/> 
-    ORDER BY REG_DATE DESC
+    <select id="selectDeliveryList" parameterType="map" resultType="com.kh.finalproject.dto.DeliveryStatus">
+        SELECT 
+            POST_NO              AS "postNo",
+            SENDER_NAME          AS "senderName",
+            
+            RECEPIENT_NAME       AS "recipientName",
+            RECEPIENT_ADDRESS    AS "recipientAddress",
+            RECEPIENT_PHONE      AS "recipientPhone",
+            
+            TRANSPORT_STATUS     AS "transportStatus",
+            TO_CHAR(REG_DATE, 'YYYY-MM-DD') AS "regDate"
+        FROM POSTAL_ITEM
+        WHERE MEMBER_DEL_FL = 'N'
+        <include refid="searchCondition"/> 
+        ORDER BY REG_DATE DESC
+        
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
     
-    OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    <select id="getDeliveryStatusCounts" resultType="map">
+    SELECT 
+        TRANSPORT_STATUS AS "transportStatus", -- 리액트 entry.transportStatus와 일치시킴
+        COUNT(*)         AS "totalCount"      -- 리액트 dataKey="totalCount"와 일치시킴
+    FROM POSTAL_ITEM                          -- 테이블명 확인 (DELIVERY_STATUS 아님)
+    WHERE MEMBER_DEL_FL = 'N'                 -- 삭제되지 않은 것만 집계
+    GROUP BY TRANSPORT_STATUS
 </select>
 
-    </mapper>
+</mapper>

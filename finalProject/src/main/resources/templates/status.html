@@ -12,11 +12,17 @@
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">택배 접수 현황</h1>
             <p class="text-gray-600">등록된 택배의 현재 상태를 확인하세요</p>
-        </div>
+			<a href="/" class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+			        <i data-lucide="home" class="w-5 h-5"></i>
+			        <span class="font-medium">return</span>
+			    </a>
+			</div>
 
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+			
             <form action="/deliverystatus/list" method="get" id="searchForm">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<input type="hidden" name="cp" value="1">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="relative">
                         <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
                         <input type="ftext" name="query" th:value="${param.query}" 

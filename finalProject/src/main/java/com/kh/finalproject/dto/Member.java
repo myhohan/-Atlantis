@@ -29,8 +29,10 @@ public class Member implements Serializable{
 	private String memberNickname;
 	private String memberTel;
 	private String memberAddress;
+	private String memberAddressDetail; // 상세주소
 	private String profileImg;
 	private String enrollDate;
 	private String memberDelFl;
 	private int authority;
+	private String memberPost;
 }

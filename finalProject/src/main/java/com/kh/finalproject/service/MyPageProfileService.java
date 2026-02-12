@@ -78,4 +78,6 @@ public interface MyPageProfileService {
 	List<DeliveryRequest> selectMyParcelList(int memberNo);
 
 	List<DeliveryRequest> selectMyPaymentList(int memberNo);
+
+	int updateInfo(Member inputMember);
 }

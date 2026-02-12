@@ -1,5 +1,7 @@
 package com.kh.finalproject.service;
 
+import java.util.List;
+
 import com.kh.finalproject.dto.DeliveryLostandFound;
 
 public interface DeliveryLostandFoundService {
@@ -15,4 +17,6 @@ public interface DeliveryLostandFoundService {
 
     // 신고 접수 기능
     String fileReport(DeliveryLostandFound dto);
+
+	List<DeliveryLostandFound> getRecentReports();
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kh.finalproject.admin.model.mapper.DeliveryStatusAPIMapper">
+    <select id="getDeliveryStatusAPICounts" resultType="map">
+        SELECT 
+            TRANSPORT_STATUS AS "transportStatus", -- SQL 컬럼명과 DTO 필드명 매칭
+            COUNT(*)         AS "totalCount"
+        FROM POSTAL_ITEM                          -- 테이블명: POSTAL_ITEM (확인됨)
+        WHERE MEMBER_DEL_FL = 'N'                 -- SQL에 정의된 삭제 플래그
+        GROUP BY TRANSPORT_STATUS
+    </select>
+</mapper>
